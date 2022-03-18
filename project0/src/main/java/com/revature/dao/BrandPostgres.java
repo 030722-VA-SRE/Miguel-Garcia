@@ -35,7 +35,7 @@ public class BrandPostgres {
 		return genId;
 	}//end createBrand
 	
-	public List<Brand> getBand() {
+	public List<Brand> getAllBands() {
 		String sql = "select * from brand;";
 		List<Brand> brandList = new ArrayList<>();
 		

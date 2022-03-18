@@ -4,7 +4,7 @@ public class Flavor{
 	
 	private int id;
 	private String flavor;
-	private float ounces;
+	private int ounces;
 	private float price;
 		
 	private Brand brand;
@@ -29,11 +29,11 @@ public class Flavor{
 		this.flavor = flavor;
 	}
 
-	public float getOunces() {
+	public int getOunces() {
 		return ounces;
 	}
 
-	public void setOunces(float ounces) {
+	public void setOunces(int ounces) {
 		this.ounces = ounces;
 	}
 

@@ -26,7 +26,7 @@ public class Driver {
 		//displays all of the brands
 		app.get("brand", ctx -> {
 			
-			ctx.json(bp.getBand());
+			ctx.json(bp.getAllBands());
 			
 		});
 		
