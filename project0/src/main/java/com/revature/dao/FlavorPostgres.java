@@ -11,7 +11,7 @@ import com.revature.models.Brand;
 import com.revature.models.Flavor;
 import com.revature.util.ConnectionUtil;
 
-public class FlavorPostgres {
+public class FlavorPostgres implements FlavorDao{
 	
 	public List<Flavor> getAllFlavors() {
 		String sql = "select * from flavors;";

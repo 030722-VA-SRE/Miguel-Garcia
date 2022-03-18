@@ -2,14 +2,14 @@ package com.revature.services;
 
 import java.util.List;
 
-import com.revature.dao.FlavorPostgres;
+import com.revature.dao.*;
 import com.revature.exceptions.DatabaseException;
 import com.revature.exceptions.FlavorNotFoundException;
 import com.revature.models.Flavor;
 
 public class FlavorService {
 
-	private FlavorPostgres fp;
+	private FlavorDao fp;
 	
 	public FlavorService(){
 		fp = new FlavorPostgres();

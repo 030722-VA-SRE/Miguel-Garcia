@@ -2,13 +2,13 @@ package com.revature.services;
 
 import java.util.List;
 
-import com.revature.dao.BrandPostgres;
+import com.revature.dao.*;
 import com.revature.exceptions.*;
 import com.revature.models.Brand;
 
 public class BrandService {
 	
-	BrandPostgres bp;
+	private BrandDao bp;
 	
 	public BrandService(){
 		bp = new BrandPostgres();

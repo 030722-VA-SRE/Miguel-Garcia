@@ -6,8 +6,9 @@ import java.util.*;
 import com.revature.models.Brand;
 import com.revature.util.ConnectionUtil;
 
-public class BrandPostgres {
-
+public class BrandPostgres implements BrandDao{
+	
+	@Override
 	public int createBrand(Brand brand) {
 		// if -1 is returned, no record was created
 		int genId = -1;
@@ -35,6 +36,7 @@ public class BrandPostgres {
 		return genId;
 	}//end createBrand
 	
+	@Override
 	public List<Brand> getAllBands() {
 		String sql = "select * from brand;";
 		List<Brand> brandList = new ArrayList<>();
@@ -58,6 +60,7 @@ public class BrandPostgres {
 		return brandList;
 	}//end getBand
 	
+	@Override
 	public Brand getBandById(int id) {
 
 		String sql = "select * from brand where id = ?;";
@@ -83,6 +86,7 @@ public class BrandPostgres {
 		
 	}//end getBrandById
 	
+	@Override
 	public boolean updateBrand(Brand brand) {
 		String sql = "update brand set name = ? where id = ?;";
 		int rowsChanged = -1;
@@ -106,7 +110,7 @@ public class BrandPostgres {
 		return true;
 	}
 
-	
+	@Override
 	public boolean deleteBrandById(int id) {
 		String sql = "delete from brand where id = ?;";
 		int rowsChanged = -1;
@@ -126,7 +130,8 @@ public class BrandPostgres {
 			return false;
 		}
 		return true;
-	}
+		
+	}//end deleteBrandById
 	
 	
 }//end BrandPostgres
