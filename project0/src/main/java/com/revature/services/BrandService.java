@@ -16,7 +16,9 @@ public class BrandService {
 	}//end BrandService
 	
 	public List<Brand> getAllBrands(){
+		
 		return bp.getAllBands();
+		
 	}//end getAllBrands
 	
 	public Brand getBrandById(int id) throws BrandNotFoundException{
