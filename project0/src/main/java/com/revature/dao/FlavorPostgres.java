@@ -14,7 +14,8 @@ import com.revature.util.ConnectionUtil;
 public class FlavorPostgres implements FlavorDao{
 	
 	public List<Flavor> getAllFlavors() {
-		String sql = "select * from flavors;";
+		//String sql = "select * from flavor;";
+		String sql = "select f.id, f.name, f.ounces, f.price, f.brand_id, b.name as brand_name from flavor f join brand b on f.brand_id = b.id;";
 		List<Flavor> flavorList = new ArrayList<>();
 
 		try (Connection c = ConnectionUtil.getConnectionFromEnv()) {
@@ -33,7 +34,8 @@ public class FlavorPostgres implements FlavorDao{
 				*/
 				
 				Brand brand = new Brand();
-				brand.setId(rs.getInt("branch_id"));
+				brand.setId(rs.getInt("brand_id"));
+				brand.setBrand(rs.getString("brand_name"));
 				newFlavor.setBrand(brand);
 				
 				flavorList.add(newFlavor);
@@ -48,7 +50,8 @@ public class FlavorPostgres implements FlavorDao{
 	
 	public Flavor getFlavorById(int id) {
 		
-		String sql = "select * from flavor where id = ?;";
+		//String sql = "select * from flavor where id = ?;";
+		String sql = "select f.id, f.name, f.ounces, f.price, f.brand_id, b.name as brand_name from flavor f join brand b on f.brand_id = b.id where f.id = ?;";
 		
 		Flavor flavor = new Flavor();
 		
@@ -72,7 +75,8 @@ public class FlavorPostgres implements FlavorDao{
 				*/
 				
 				Brand brand = new Brand();
-				brand.setId(rs.getInt("branch_id"));
+				brand.setId(rs.getInt("brand_id"));
+				brand.setBrand(rs.getString("brand_name"));
 				flavor.setBrand(brand);
 				
 			}
@@ -86,7 +90,8 @@ public class FlavorPostgres implements FlavorDao{
 	}//end getFlavorById
 	
 	public List<Flavor> getFlavorByBrandId(int brandId) {
-		String sql = "select * from flavor where brand_id = ?;";
+		//String sql = "select * from flavor where brand_id = ?;";
+		String sql = "select f.id, f.name, f.ounces, f.price, f.brand_id, b.name as brand_name from flavor f join brand b on f.brand_id = b.id where b.id = ?;";
 		List<Flavor> flavorList = new ArrayList<>();
 
 		try (Connection c = ConnectionUtil.getConnectionFromEnv()) {
@@ -109,7 +114,8 @@ public class FlavorPostgres implements FlavorDao{
 				*/
 				
 				Brand brand = new Brand();
-				brand.setId(rs.getInt("branch_id"));
+				brand.setId(rs.getInt("brand_id"));
+				brand.setBrand(rs.getString("brand_name"));
 				newFlavor.setBrand(brand);
 
 				flavorList.add(newFlavor);

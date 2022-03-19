@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import org.eclipse.jetty.http.HttpStatus;
 
 import com.revature.controllers.BrandController;
+import com.revature.controllers.FlavorController;
 import com.revature.dao.BrandPostgres;
 import com.revature.models.Brand;
 import com.revature.util.ConnectionUtil;
@@ -38,11 +39,26 @@ public class Driver {
 					
 					get(BrandController::getBrandById);
 					delete(BrandController::deleteBrand);
+					put(BrandController::updateBrand);
 					
 				});//end path id
 				
+				path("{id}/flavors", () -> {
+					
+					get(FlavorController::getFlavorByBrandId);
+				});
+				
 			});//end path "brand"
-		
+			
+			path("flavors", () ->{
+				get(FlavorController::getFlavor);
+				post(FlavorController::createFlavor);
+				
+				path("{id}", () -> {
+					get(FlavorController:: getFlavorById);
+				});
+			});//end path flavors
+			
 		});//end routes
 
 

@@ -51,10 +51,31 @@ public class BrandController {
 			ctx.result("Unable to find brand of id " + brandId);
 			
 			//logging
-			e.printStackTrace();
+			//e.printStackTrace();
 		}//end try catch
 		
 	}//end getBranchById
+	
+	public static void updateBrand(Context ctx){
+		
+		String pathParamId = ctx.pathParam("id");
+		int brandId = Integer.parseInt(pathParamId);
+		
+		Brand b = ctx.bodyAsClass(Brand.class);
+		
+		b.setId(brandId);
+		
+		try {
+			bs.updateBrand(b);
+			ctx.status(HttpStatus.ACCEPTED_202);
+			
+		}catch(DatabaseException e) {
+			ctx.status(HttpStatus.NOT_FOUND_404);
+			ctx.result("Unable to find brand to update");
+			
+		}//end try catch
+		
+	}//end updateBrand
 	
 	public static void deleteBrand(Context ctx){
 		

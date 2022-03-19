@@ -38,7 +38,7 @@ public class BrandPostgres implements BrandDao{
 	
 	@Override
 	public List<Brand> getAllBands() {
-		String sql = "select * from brand;";
+		String sql = "select * from brand order by id;";
 		List<Brand> brandList = new ArrayList<>();
 		
 		try(Connection c = ConnectionUtil.getConnectionFromEnv()){
