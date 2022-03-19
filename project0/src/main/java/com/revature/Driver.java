@@ -6,37 +6,47 @@ import java.sql.SQLException;
 
 import org.eclipse.jetty.http.HttpStatus;
 
+import com.revature.controllers.BrandController;
 import com.revature.dao.BrandPostgres;
 import com.revature.models.Brand;
 import com.revature.util.ConnectionUtil;
 
-import io.javalin.Javalin;
+import static io.javalin.apibuilder.ApiBuilder.*;
+import io.javalin.*;
 
 public class Driver {
 
 	public static void main(String[] args) {
 		
-		BrandPostgres bp = new BrandPostgres();
+		 
 		Javalin app = Javalin.create((config) ->{
 			//pass any configuration associated with Javalin
+			config.defaultContentType = "application/json";
 		});
 		
-		app.start();
+		app.start(8080);
 		
-		//displays all of the brands
-		app.get("brand", ctx -> {
+		//route() creates a temporary static instance of Javalin
+		app.routes(() -> {
 			
-			ctx.json(bp.getAllBands());
-			
-		});
+			//handles url starting with brands
+			path("brands", () -> {
+				get(BrandController::getBrand);
+				post(BrandController::createBrand);
+				
+				path("{id}", () -> {
+					
+					get(BrandController::getBrandById);
+					delete(BrandController::deleteBrand);
+					
+				});//end path id
+				
+			});//end path "brand"
 		
-		//add a brand
-		app.post("brand", ctx -> {
-			
-			bp.createBrand(ctx.bodyAsClass(Brand.class));
-			ctx.status(HttpStatus.CREATED_201);
-		});
+		});//end routes
+
 
 	}//end main
+
 	
 }//end Driver
