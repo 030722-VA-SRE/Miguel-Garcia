@@ -46,7 +46,20 @@ public class Driver {
 				path("{id}/flavors", () -> {
 					
 					get(FlavorController::getFlavorByBrandId);
+					
+					path("{flavorId}", () -> {
+						
+						get(FlavorController:: getFlavorById);
+						
+					});
+					
 				});
+				
+				/*path("{id}/flavors/{flavorId}", () -> {
+				
+					get(FlavorController:: getFlavorById);
+				
+				});*/
 				
 			});//end path "brand"
 			
@@ -54,9 +67,10 @@ public class Driver {
 				get(FlavorController::getFlavor);
 				post(FlavorController::createFlavor);
 				
-				path("{id}", () -> {
+				path("{flavorId}", () -> {
 					get(FlavorController:: getFlavorById);
 				});
+				
 			});//end path flavors
 			
 		});//end routes

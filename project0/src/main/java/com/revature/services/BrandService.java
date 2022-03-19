@@ -17,6 +17,8 @@ public class BrandService {
 	
 	public List<Brand> getAllBrands(){
 		
+		//if ArrayList size is empty
+		
 		return bp.getAllBands();
 		
 	}//end getAllBrands

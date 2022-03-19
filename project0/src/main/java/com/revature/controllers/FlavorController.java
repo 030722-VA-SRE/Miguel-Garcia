@@ -41,7 +41,7 @@ public class FlavorController {
 	
 	public static void getFlavorById(Context ctx){
 		
-		String pathParamId = ctx.pathParam("id");
+		String pathParamId = ctx.pathParam("flavorId");
 		int flavorId = Integer.parseInt(pathParamId);
 		
 		Flavor f;
