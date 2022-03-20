@@ -15,7 +15,7 @@ public class FlavorPostgres implements FlavorDao{
 	
 	public List<Flavor> getAllFlavors() {
 		//String sql = "select * from flavor;";
-		String sql = "select f.id, f.name, f.ounces, f.price, f.brand_id, b.name as brand_name from flavor f join brand b on f.brand_id = b.id;";
+		String sql = "select f.id, f.name, f.ounces, f.price, f.brand_id, b.name as brand_name from flavor f join brand b on f.brand_id = b.id order by f.id;";
 		List<Flavor> flavorList = new ArrayList<>();
 
 		try (Connection c = ConnectionUtil.getConnectionFromEnv()) {
@@ -51,7 +51,7 @@ public class FlavorPostgres implements FlavorDao{
 	public Flavor getFlavorById(int id) {
 		
 		//String sql = "select * from flavor where id = ?;";
-		String sql = "select f.id, f.name, f.ounces, f.price, f.brand_id, b.name as brand_name from flavor f join brand b on f.brand_id = b.id where f.id = ?;";
+		String sql = "select f.id, f.name, f.ounces, f.price, f.brand_id, b.name as brand_name from flavor f join brand b on f.brand_id = b.id where f.id = ? order by f.id;";
 		
 		Flavor flavor = new Flavor();
 		
@@ -91,7 +91,7 @@ public class FlavorPostgres implements FlavorDao{
 	
 	public List<Flavor> getFlavorByBrandId(int brandId) {
 		//String sql = "select * from flavor where brand_id = ?;";
-		String sql = "select f.id, f.name, f.ounces, f.price, f.brand_id, b.name as brand_name from flavor f join brand b on f.brand_id = b.id where b.id = ?;";
+		String sql = "select f.id, f.name, f.ounces, f.price, f.brand_id, b.name as brand_name from flavor f join brand b on f.brand_id = b.id where b.id = ? order by f.id;";
 		List<Flavor> flavorList = new ArrayList<>();
 
 		try (Connection c = ConnectionUtil.getConnectionFromEnv()) {
@@ -202,7 +202,7 @@ public class FlavorPostgres implements FlavorDao{
 	
 	public List<Flavor> getFlavorByName(String name){
 		
-		String sql = "select f.id, f.name, f.ounces, f.price, f.brand_id, b.name as brand_name from flavor f join brand b on f.brand_id = b.id where f.name like ?;";
+		String sql = "select f.id, f.name, f.ounces, f.price, f.brand_id, b.name as brand_name from flavor f join brand b on f.brand_id = b.id where f.name like ? order by f.id;";
 		
 		List<Flavor> flavorList = new ArrayList<>();
 
@@ -242,7 +242,7 @@ public class FlavorPostgres implements FlavorDao{
 	}//getFlavorByName
 	
 	public List<Flavor> getFlavorByOunces(int ounces) {
-		String sql = "select f.id, f.name, f.ounces, f.price, f.brand_id, b.name as brand_name from flavor f join brand b on f.brand_id = b.id where f.ounces <= ?;";
+		String sql = "select f.id, f.name, f.ounces, f.price, f.brand_id, b.name as brand_name from flavor f join brand b on f.brand_id = b.id where f.ounces <= ? order by f.id;";
 		
 		List<Flavor> flavorList = new ArrayList<>();
 
@@ -280,7 +280,7 @@ public class FlavorPostgres implements FlavorDao{
 	}//end getFlavorByOunces
 	
 	public List<Flavor> getFlavorByPrice(float price){
-		String sql = "select f.id, f.name, f.ounces, f.price, f.brand_id, b.name as brand_name from flavor f join brand b on f.brand_id = b.id where f.price <= ?;";
+		String sql = "select f.id, f.name, f.ounces, f.price, f.brand_id, b.name as brand_name from flavor f join brand b on f.brand_id = b.id where f.price <= ? order by f.id;";
 		
 		List<Flavor> flavorList = new ArrayList<>();
 
@@ -318,7 +318,7 @@ public class FlavorPostgres implements FlavorDao{
 	}//end getFlavorByPrice
 	
 	public List<Flavor> getFlavorByNameAndOunces(String name, int ounces){
-		String sql = "select f.id, f.name, f.ounces, f.price, f.brand_id, b.name as brand_name from flavor f join brand b on f.brand_id = b.id where f.name like ? and f.ounces <= ?;";
+		String sql = "select f.id, f.name, f.ounces, f.price, f.brand_id, b.name as brand_name from flavor f join brand b on f.brand_id = b.id where f.name like ? and f.ounces <= ? order by f.id;";
 		
 		List<Flavor> flavorList = new ArrayList<>();
 
@@ -357,7 +357,7 @@ public class FlavorPostgres implements FlavorDao{
 	}//end getFlavorByNameAndOunces
 	
 	public List<Flavor> getFlavorByNameAndPrice(String name, float price){
-		String sql = "select f.id, f.name, f.ounces, f.price, f.brand_id, b.name as brand_name from flavor f join brand b on f.brand_id = b.id where f.name like ? and f.price <= ?;";
+		String sql = "select f.id, f.name, f.ounces, f.price, f.brand_id, b.name as brand_name from flavor f join brand b on f.brand_id = b.id where f.name like ? and f.price <= ? order by f.id;";
 		
 		List<Flavor> flavorList = new ArrayList<>();
 
@@ -396,7 +396,7 @@ public class FlavorPostgres implements FlavorDao{
 	}//end getFlavorByNameAndPrice
 	
 	public List<Flavor> getFlavorByOuncesAndPrice(int ounces, float price){
-		String sql = "select f.id, f.name, f.ounces, f.price, f.brand_id, b.name as brand_name from flavor f join brand b on f.brand_id = b.id where f.ounces <= ? and f.price <= ?;";
+		String sql = "select f.id, f.name, f.ounces, f.price, f.brand_id, b.name as brand_name from flavor f join brand b on f.brand_id = b.id where f.ounces <= ? and f.price <= ? order by f.id;";
 		
 		List<Flavor> flavorList = new ArrayList<>();
 
@@ -435,7 +435,7 @@ public class FlavorPostgres implements FlavorDao{
 	}//end getFlavorByOuncesAndPrice
 	
 	public List<Flavor> getFlavorByNameOuncesAndPrice(String name, int ounces, float price){
-		String sql = "select f.id, f.name, f.ounces, f.price, f.brand_id, b.name as brand_name from flavor f join brand b on f.brand_id = b.id where f.name like ? and f.ounces <= ? and f.price <= ?;";
+		String sql = "select f.id, f.name, f.ounces, f.price, f.brand_id, b.name as brand_name from flavor f join brand b on f.brand_id = b.id where f.name like ? and f.ounces <= ? and f.price <= ? order by f.id;";
 		
 		List<Flavor> flavorList = new ArrayList<>();
 
@@ -475,7 +475,7 @@ public class FlavorPostgres implements FlavorDao{
 	}//end getFlavorByNameOuncesAndPrice
 	
 	public List<Flavor> getFlavorByNameWithBrandId(String name, int id){
-		String sql = "select f.id, f.name, f.ounces, f.price, f.brand_id, b.name as brand_name from flavor f join brand b on f.brand_id = b.id where f.name like ? and f.brand_id = ?;";
+		String sql = "select f.id, f.name, f.ounces, f.price, f.brand_id, b.name as brand_name from flavor f join brand b on f.brand_id = b.id where f.name like ? and f.brand_id = ? order by f.id;";
 		
 		List<Flavor> flavorList = new ArrayList<>();
 
@@ -514,7 +514,7 @@ public class FlavorPostgres implements FlavorDao{
 	}//end 
 	
 	public List<Flavor> getFlavorByOuncesWithBrandId(int ounces, int id){
-		String sql = "select f.id, f.name, f.ounces, f.price, f.brand_id, b.name as brand_name from flavor f join brand b on f.brand_id = b.id where f.ounces <= ? and f.brand_id = ?;";
+		String sql = "select f.id, f.name, f.ounces, f.price, f.brand_id, b.name as brand_name from flavor f join brand b on f.brand_id = b.id where f.ounces <= ? and f.brand_id = ? order by f.id;";
 		
 		List<Flavor> flavorList = new ArrayList<>();
 
@@ -553,7 +553,7 @@ public class FlavorPostgres implements FlavorDao{
 	}//end
 	
 	public List<Flavor> getFlavorByPriceWithBrandId(float price, int id){
-		String sql = "select f.id, f.name, f.ounces, f.price, f.brand_id, b.name as brand_name from flavor f join brand b on f.brand_id = b.id where f.price <= ? and where f.brand_id = ?;";
+		String sql = "select f.id, f.name, f.ounces, f.price, f.brand_id, b.name as brand_name from flavor f join brand b on f.brand_id = b.id where f.price <= ? and where f.brand_id = ? order by f.id;";
 		
 		List<Flavor> flavorList = new ArrayList<>();
 
@@ -592,7 +592,7 @@ public class FlavorPostgres implements FlavorDao{
 	}//end getFlavorByPrice
 
 	public List<Flavor> getFlavorByNameAndOuncesWithBrandId(String name, int ounces, int id){
-		String sql = "select f.id, f.name, f.ounces, f.price, f.brand_id, b.name as brand_name from flavor f join brand b on f.brand_id = b.id where f.name like ? and f.ounces <= ? and f.brand_id = ?;";
+		String sql = "select f.id, f.name, f.ounces, f.price, f.brand_id, b.name as brand_name from flavor f join brand b on f.brand_id = b.id where f.name like ? and f.ounces <= ? and f.brand_id = ? order by f.id;";
 		
 		List<Flavor> flavorList = new ArrayList<>();
 
@@ -632,7 +632,7 @@ public class FlavorPostgres implements FlavorDao{
 	}//end getFlavorByNameAndOunces
 	
 	public List<Flavor> getFlavorByNameAndPriceWithBrandId(String name, float price, int id){
-		String sql = "select f.id, f.name, f.ounces, f.price, f.brand_id, b.name as brand_name from flavor f join brand b on f.brand_id = b.id where f.name like ? and f.price <= ? and f.brand_id = ?;";
+		String sql = "select f.id, f.name, f.ounces, f.price, f.brand_id, b.name as brand_name from flavor f join brand b on f.brand_id = b.id where f.name like ? and f.price <= ? and f.brand_id = ? order by f.id;";
 		
 		List<Flavor> flavorList = new ArrayList<>();
 
@@ -672,7 +672,7 @@ public class FlavorPostgres implements FlavorDao{
 	}//end getFlavorByNameAndPrice
 	
 	public List<Flavor> getFlavorByOuncesAndPriceWithBrandId(int ounces, float price, int id){
-		String sql = "select f.id, f.name, f.ounces, f.price, f.brand_id, b.name as brand_name from flavor f join brand b on f.brand_id = b.id where f.ounces <= ? and f.price <= ? and f.brand_id = ?;";
+		String sql = "select f.id, f.name, f.ounces, f.price, f.brand_id, b.name as brand_name from flavor f join brand b on f.brand_id = b.id where f.ounces <= ? and f.price <= ? and f.brand_id = ? order by f.id;";
 		
 		List<Flavor> flavorList = new ArrayList<>();
 
@@ -712,7 +712,7 @@ public class FlavorPostgres implements FlavorDao{
 	}//end getFlavorByOuncesAndPrice
 
 	public List<Flavor> getFlavorByNameOuncesAndPriceWithBrandId(String name, int ounces, float price, int id){
-		String sql = "select f.id, f.name, f.ounces, f.price, f.brand_id, b.name as brand_name from flavor f join brand b on f.brand_id = b.id where f.name like ? and f.ounces <= ? and f.price <= ? and f.brand_id = ?;";
+		String sql = "select f.id, f.name, f.ounces, f.price, f.brand_id, b.name as brand_name from flavor f join brand b on f.brand_id = b.id where f.name like ? and f.ounces <= ? and f.price <= ? and f.brand_id = ? order by f.id;";
 		
 		List<Flavor> flavorList = new ArrayList<>();
 
