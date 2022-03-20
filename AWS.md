@@ -36,6 +36,17 @@ What are the different EC2 instance sizes/types?
 - To view more information about EC2 instance types click [here](https://aws.amazon.com/ec2/instance-types/?trk=36c6da98-7b20-48fa-8225-4784bced9843&sc_channel=ps&sc_campaign=acquisition&sc_medium=ACQ-P|PS-GO|Brand|Desktop|SU|Compute|EC2|US|EN|Text&s_kwcid=AL!4422!3!536392622533!e!!g!!ec2%20instance%20types&ef_id=CjwKCAjwoduRBhA4EiwACL5RP2UecZyKzvMTb8KVVzP0i3tFQkjPd0hhF2DMmGmAcaNblyhReh7N_xoCt-gQAvD_BwE:G:s&s_kwcid=AL!4422!3!536392622533!e!!g!!ec2%20instance%20types)
 
 Once you create an EC2, how to connect to it?
+- Open an SSH client
+- Locate your private key file. Example: mynewkeypair.pem
+- Connect to your instance using its Public DNS. Example: ec2-18-188-136-133.us-east-2.compute.amazonaws.com
+- ssh -i [key file] [Public DNS]
+
+What are Security Groups? When defining a rule for a security group, what 3 things do you need to specify?
+- A security group acts as a virtual firewall for your EC2 instances to control incoming and outgoing traffic based on their IP address
+- Source, Protocol, and Port range?
+
+What's the difference between scalability, elasticity, and resiliency?
+- 
 
 
 # RDS
