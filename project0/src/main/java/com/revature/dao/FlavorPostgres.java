@@ -198,5 +198,46 @@ public class FlavorPostgres implements FlavorDao{
 		}
 
 		return true;
-	}
+	}//end deleteFlavorById
+	
+	public List<Flavor> getFlavorByName(String name){
+		
+		String sql = "select f.id, f.name, f.ounces, f.price, f.brand_id, b.name as brand_name from flavor f join brand b on f.brand_id = b.id where f.name like '%?%';";
+		
+		List<Flavor> flavorList = new ArrayList<>();
+
+		try (Connection c = ConnectionUtil.getConnectionFromEnv()) {
+			PreparedStatement ps = c.prepareStatement(sql);
+
+			ps.setString(1, name);
+
+			ResultSet rs = ps.executeQuery();
+
+			while (rs.next()) {
+				
+				Flavor newFlavor = new Flavor();
+				newFlavor.setId(rs.getInt("id"));
+				newFlavor.setFlavor(rs.getString("name"));
+				newFlavor.setOunces(rs.getInt("ounces"));
+				newFlavor.setPrice(rs.getFloat("price"));
+				/*-
+				 *  to handle incompatible types of ref in database and Java Obj
+				 *  	- just set a "dummy object" with just the id set for
+				*/
+				
+				Brand brand = new Brand();
+				brand.setId(rs.getInt("brand_id"));
+				brand.setBrand(rs.getString("brand_name"));
+				newFlavor.setBrand(brand);
+
+				flavorList.add(newFlavor);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return flavorList;
+		
+		
+	}//getFlavorByName
 }//end FlavorPostgres
