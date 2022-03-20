@@ -38,6 +38,7 @@ public class FlavorController {
 		String name = ctx.queryParam("name");
 		String ounces = ctx.queryParam("ounces");
 		String price = ctx.queryParam("price");
+		
 		List<Flavor> f;
 		
 		if(name == null && ounces == null && price == null) {

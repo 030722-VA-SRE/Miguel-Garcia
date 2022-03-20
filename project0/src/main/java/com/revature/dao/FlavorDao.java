@@ -15,5 +15,9 @@ public interface FlavorDao {
 	public List<Flavor> getFlavorByName(String name);
 	public List<Flavor> getFlavorByOunces(int ounces);
 	public List<Flavor> getFlavorByPrice(float price);
+	public List<Flavor> getFlavorByNameAndOunces(String name, int ounces);
+	public List<Flavor> getFlavorByNameAndPrice(String name, float price);
+	public List<Flavor> getFlavorByOuncesAndPrice(int ounces, float price);
+	public List<Flavor> getFlavorByNameOuncesAndPrice(String name, int ounces, float price);
 	
 }//end FlavorDao
