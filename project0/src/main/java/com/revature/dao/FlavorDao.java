@@ -12,5 +12,6 @@ public interface FlavorDao {
 	public int createFlavor(Flavor flavor);
 	public boolean updateFlavorPrice(Flavor flavor);
 	public boolean deleteFlavorById(int id);
+	public List<Flavor> getFlavorByName(String name);
 	
 }//end FlavorDao

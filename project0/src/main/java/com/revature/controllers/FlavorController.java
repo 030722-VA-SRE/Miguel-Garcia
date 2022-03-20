@@ -84,4 +84,44 @@ public class FlavorController {
 		}//end try catch
 		
 	}//end getFlavorByBrandId
+	
+	
+	public static void updateFlavorPrice(Context ctx) {
+		
+		String pathParamId = ctx.pathParam("flavorId");
+		int flavorId = Integer.parseInt(pathParamId);
+		
+		Flavor f = ctx.bodyAsClass(Flavor.class);
+		
+		f.setId(flavorId);
+		
+		try {
+			
+			fs.updateFlavorPrice(f);
+			ctx.status(HttpStatus.ACCEPTED_202);
+			
+		}catch(DatabaseException e) {
+			
+			ctx.status(HttpStatus.NOT_FOUND_404);
+			ctx.result("Unable to find brand to update");
+			
+		}//end catch
+		
+	}//end updateFlavorPrice
+	
+	public static void deleteFlavorById(Context ctx) {
+		
+		String pathParam = ctx.pathParam("flavorId");
+		int flavorId = Integer.parseInt(pathParam);
+		
+		try {
+			fs.deleteFlavorById(flavorId);
+			ctx.status(HttpStatus.ACCEPTED_202);
+			
+		}catch(DatabaseException e) {
+			ctx.status(HttpStatus.NOT_IMPLEMENTED_501);
+			ctx.result("Delete flavor has not been implemented");
+		}
+		
+	}//end deleteFlavorById
 }//end FlavorController

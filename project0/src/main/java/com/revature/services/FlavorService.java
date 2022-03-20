@@ -35,7 +35,7 @@ public class FlavorService {
 		
 		List<Flavor> flavorList = fp.getFlavorByBrandId(brand_id);
 		
-		if(flavorList.size() == 0) {
+		if(flavorList.isEmpty()) {
 			throw new DatabaseException(brand_id + " was not found in the database");
 		}
 		
