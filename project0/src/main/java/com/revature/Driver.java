@@ -23,11 +23,11 @@ public class Driver {
 
 	public static void main(String[] args) {
 		
-		FlavorDao fd = new FlavorPostgres();
+		/*FlavorDao fd = new FlavorPostgres();
 		
-		List<Flavor> f = fd.getFlavorByName("Hot");
+		List<Flavor> f = fd.getFlavorByName("Onion");
 		
-		System.out.println(f.size());
+		System.out.println(f.size());*/
 		
 		Javalin app = Javalin.create((config) ->{
 			//pass any configuration associated with Javalin

@@ -202,14 +202,14 @@ public class FlavorPostgres implements FlavorDao{
 	
 	public List<Flavor> getFlavorByName(String name){
 		
-		String sql = "select f.id, f.name, f.ounces, f.price, f.brand_id, b.name as brand_name from flavor f join brand b on f.brand_id = b.id where f.name like '%?%';";
+		String sql = "select f.id, f.name, f.ounces, f.price, f.brand_id, b.name as brand_name from flavor f join brand b on f.brand_id = b.id where f.name like ?;";
 		
 		List<Flavor> flavorList = new ArrayList<>();
 
 		try (Connection c = ConnectionUtil.getConnectionFromEnv()) {
 			PreparedStatement ps = c.prepareStatement(sql);
 
-			ps.setString(1, name);
+			ps.setString(1, "%" + name + "%");
 
 			ResultSet rs = ps.executeQuery();
 
@@ -240,4 +240,80 @@ public class FlavorPostgres implements FlavorDao{
 		
 		
 	}//getFlavorByName
+	
+	public List<Flavor> getFlavorByOunces(int ounces) {
+		String sql = "select f.id, f.name, f.ounces, f.price, f.brand_id, b.name as brand_name from flavor f join brand b on f.brand_id = b.id where f.ounces <= ?;";
+		
+		List<Flavor> flavorList = new ArrayList<>();
+
+		try (Connection c = ConnectionUtil.getConnectionFromEnv()) {
+			PreparedStatement ps = c.prepareStatement(sql);
+
+			ps.setInt(1, ounces);
+
+			ResultSet rs = ps.executeQuery();
+
+			while (rs.next()) {
+				
+				Flavor newFlavor = new Flavor();
+				newFlavor.setId(rs.getInt("id"));
+				newFlavor.setFlavor(rs.getString("name"));
+				newFlavor.setOunces(rs.getInt("ounces"));
+				newFlavor.setPrice(rs.getFloat("price"));
+				/*-
+				 *  to handle incompatible types of ref in database and Java Obj
+				 *  	- just set a "dummy object" with just the id set for
+				*/
+				
+				Brand brand = new Brand();
+				brand.setId(rs.getInt("brand_id"));
+				brand.setBrand(rs.getString("brand_name"));
+				newFlavor.setBrand(brand);
+
+				flavorList.add(newFlavor);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return flavorList;
+	}//end getFlavorByOunces
+	
+	public List<Flavor> getFlavorByPrice(float price){
+		String sql = "select f.id, f.name, f.ounces, f.price, f.brand_id, b.name as brand_name from flavor f join brand b on f.brand_id = b.id where f.price <= ?;";
+		
+		List<Flavor> flavorList = new ArrayList<>();
+
+		try (Connection c = ConnectionUtil.getConnectionFromEnv()) {
+			PreparedStatement ps = c.prepareStatement(sql);
+
+			ps.setFloat(1, price);
+
+			ResultSet rs = ps.executeQuery();
+
+			while (rs.next()) {
+				
+				Flavor newFlavor = new Flavor();
+				newFlavor.setId(rs.getInt("id"));
+				newFlavor.setFlavor(rs.getString("name"));
+				newFlavor.setOunces(rs.getInt("ounces"));
+				newFlavor.setPrice(rs.getFloat("price"));
+				/*-
+				 *  to handle incompatible types of ref in database and Java Obj
+				 *  	- just set a "dummy object" with just the id set for
+				*/
+				
+				Brand brand = new Brand();
+				brand.setId(rs.getInt("brand_id"));
+				brand.setBrand(rs.getString("brand_name"));
+				newFlavor.setBrand(brand);
+
+				flavorList.add(newFlavor);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return flavorList;
+	}//end getFlavorByPrice
 }//end FlavorPostgres
