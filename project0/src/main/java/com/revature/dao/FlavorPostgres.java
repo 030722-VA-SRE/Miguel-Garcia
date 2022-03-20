@@ -474,4 +474,282 @@ public class FlavorPostgres implements FlavorDao{
 		return flavorList;
 	}//end getFlavorByNameOuncesAndPrice
 	
+	public List<Flavor> getFlavorByNameWithBrandId(String name, int id){
+		String sql = "select f.id, f.name, f.ounces, f.price, f.brand_id, b.name as brand_name from flavor f join brand b on f.brand_id = b.id where f.name like ? and f.brand_id = ?;";
+		
+		List<Flavor> flavorList = new ArrayList<>();
+
+		try (Connection c = ConnectionUtil.getConnectionFromEnv()) {
+			PreparedStatement ps = c.prepareStatement(sql);
+
+			ps.setString(1, "%" + name + "%");
+			ps.setInt(2, id);
+
+			ResultSet rs = ps.executeQuery();
+
+			while (rs.next()) {
+				
+				Flavor newFlavor = new Flavor();
+				newFlavor.setId(rs.getInt("id"));
+				newFlavor.setFlavor(rs.getString("name"));
+				newFlavor.setOunces(rs.getInt("ounces"));
+				newFlavor.setPrice(rs.getFloat("price"));
+				/*-
+				 *  to handle incompatible types of ref in database and Java Obj
+				 *  	- just set a "dummy object" with just the id set for
+				*/
+				
+				Brand brand = new Brand();
+				brand.setId(rs.getInt("brand_id"));
+				brand.setBrand(rs.getString("brand_name"));
+				newFlavor.setBrand(brand);
+
+				flavorList.add(newFlavor);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return flavorList;
+	}//end 
+	
+	public List<Flavor> getFlavorByOuncesWithBrandId(int ounces, int id){
+		String sql = "select f.id, f.name, f.ounces, f.price, f.brand_id, b.name as brand_name from flavor f join brand b on f.brand_id = b.id where f.ounces <= ? and f.brand_id = ?;";
+		
+		List<Flavor> flavorList = new ArrayList<>();
+
+		try (Connection c = ConnectionUtil.getConnectionFromEnv()) {
+			PreparedStatement ps = c.prepareStatement(sql);
+
+			ps.setInt(1, ounces);
+			ps.setInt(2, id);
+
+			ResultSet rs = ps.executeQuery();
+
+			while (rs.next()) {
+				
+				Flavor newFlavor = new Flavor();
+				newFlavor.setId(rs.getInt("id"));
+				newFlavor.setFlavor(rs.getString("name"));
+				newFlavor.setOunces(rs.getInt("ounces"));
+				newFlavor.setPrice(rs.getFloat("price"));
+				/*-
+				 *  to handle incompatible types of ref in database and Java Obj
+				 *  	- just set a "dummy object" with just the id set for
+				*/
+				
+				Brand brand = new Brand();
+				brand.setId(rs.getInt("brand_id"));
+				brand.setBrand(rs.getString("brand_name"));
+				newFlavor.setBrand(brand);
+
+				flavorList.add(newFlavor);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return flavorList;
+	}//end
+	
+	public List<Flavor> getFlavorByPriceWithBrandId(float price, int id){
+		String sql = "select f.id, f.name, f.ounces, f.price, f.brand_id, b.name as brand_name from flavor f join brand b on f.brand_id = b.id where f.price <= ? and where f.brand_id = ?;";
+		
+		List<Flavor> flavorList = new ArrayList<>();
+
+		try (Connection c = ConnectionUtil.getConnectionFromEnv()) {
+			PreparedStatement ps = c.prepareStatement(sql);
+
+			ps.setFloat(1, price);
+			ps.setInt(2, id);
+
+			ResultSet rs = ps.executeQuery();
+
+			while (rs.next()) {
+				
+				Flavor newFlavor = new Flavor();
+				newFlavor.setId(rs.getInt("id"));
+				newFlavor.setFlavor(rs.getString("name"));
+				newFlavor.setOunces(rs.getInt("ounces"));
+				newFlavor.setPrice(rs.getFloat("price"));
+				/*-
+				 *  to handle incompatible types of ref in database and Java Obj
+				 *  	- just set a "dummy object" with just the id set for
+				*/
+				
+				Brand brand = new Brand();
+				brand.setId(rs.getInt("brand_id"));
+				brand.setBrand(rs.getString("brand_name"));
+				newFlavor.setBrand(brand);
+
+				flavorList.add(newFlavor);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return flavorList;
+	}//end getFlavorByPrice
+
+	public List<Flavor> getFlavorByNameAndOuncesWithBrandId(String name, int ounces, int id){
+		String sql = "select f.id, f.name, f.ounces, f.price, f.brand_id, b.name as brand_name from flavor f join brand b on f.brand_id = b.id where f.name like ? and f.ounces <= ? and f.brand_id = ?;";
+		
+		List<Flavor> flavorList = new ArrayList<>();
+
+		try (Connection c = ConnectionUtil.getConnectionFromEnv()) {
+			PreparedStatement ps = c.prepareStatement(sql);
+
+			ps.setString(1, "%" + name + "%");
+			ps.setInt(2, ounces);
+			ps.setInt(3, id);
+			
+			ResultSet rs = ps.executeQuery();
+
+			while (rs.next()) {
+				
+				Flavor newFlavor = new Flavor();
+				newFlavor.setId(rs.getInt("id"));
+				newFlavor.setFlavor(rs.getString("name"));
+				newFlavor.setOunces(rs.getInt("ounces"));
+				newFlavor.setPrice(rs.getFloat("price"));
+				/*-
+				 *  to handle incompatible types of ref in database and Java Obj
+				 *  	- just set a "dummy object" with just the id set for
+				*/
+				
+				Brand brand = new Brand();
+				brand.setId(rs.getInt("brand_id"));
+				brand.setBrand(rs.getString("brand_name"));
+				newFlavor.setBrand(brand);
+
+				flavorList.add(newFlavor);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return flavorList;
+	}//end getFlavorByNameAndOunces
+	
+	public List<Flavor> getFlavorByNameAndPriceWithBrandId(String name, float price, int id){
+		String sql = "select f.id, f.name, f.ounces, f.price, f.brand_id, b.name as brand_name from flavor f join brand b on f.brand_id = b.id where f.name like ? and f.price <= ? and f.brand_id = ?;";
+		
+		List<Flavor> flavorList = new ArrayList<>();
+
+		try (Connection c = ConnectionUtil.getConnectionFromEnv()) {
+			PreparedStatement ps = c.prepareStatement(sql);
+
+			ps.setString(1, "%" + name + "%");
+			ps.setFloat(2, price);
+			ps.setInt(3, id);
+			
+			ResultSet rs = ps.executeQuery();
+
+			while (rs.next()) {
+				
+				Flavor newFlavor = new Flavor();
+				newFlavor.setId(rs.getInt("id"));
+				newFlavor.setFlavor(rs.getString("name"));
+				newFlavor.setOunces(rs.getInt("ounces"));
+				newFlavor.setPrice(rs.getFloat("price"));
+				/*-
+				 *  to handle incompatible types of ref in database and Java Obj
+				 *  	- just set a "dummy object" with just the id set for
+				*/
+				
+				Brand brand = new Brand();
+				brand.setId(rs.getInt("brand_id"));
+				brand.setBrand(rs.getString("brand_name"));
+				newFlavor.setBrand(brand);
+
+				flavorList.add(newFlavor);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return flavorList;
+	}//end getFlavorByNameAndPrice
+	
+	public List<Flavor> getFlavorByOuncesAndPriceWithBrandId(int ounces, float price, int id){
+		String sql = "select f.id, f.name, f.ounces, f.price, f.brand_id, b.name as brand_name from flavor f join brand b on f.brand_id = b.id where f.ounces <= ? and f.price <= ? and f.brand_id = ?;";
+		
+		List<Flavor> flavorList = new ArrayList<>();
+
+		try (Connection c = ConnectionUtil.getConnectionFromEnv()) {
+			PreparedStatement ps = c.prepareStatement(sql);
+
+			ps.setInt(1, ounces);
+			ps.setFloat(2, price);
+			ps.setInt(3, id);
+			
+			ResultSet rs = ps.executeQuery();
+
+			while (rs.next()) {
+				
+				Flavor newFlavor = new Flavor();
+				newFlavor.setId(rs.getInt("id"));
+				newFlavor.setFlavor(rs.getString("name"));
+				newFlavor.setOunces(rs.getInt("ounces"));
+				newFlavor.setPrice(rs.getFloat("price"));
+				/*-
+				 *  to handle incompatible types of ref in database and Java Obj
+				 *  	- just set a "dummy object" with just the id set for
+				*/
+				
+				Brand brand = new Brand();
+				brand.setId(rs.getInt("brand_id"));
+				brand.setBrand(rs.getString("brand_name"));
+				newFlavor.setBrand(brand);
+
+				flavorList.add(newFlavor);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return flavorList;
+	}//end getFlavorByOuncesAndPrice
+
+	public List<Flavor> getFlavorByNameOuncesAndPriceWithBrandId(String name, int ounces, float price, int id){
+		String sql = "select f.id, f.name, f.ounces, f.price, f.brand_id, b.name as brand_name from flavor f join brand b on f.brand_id = b.id where f.name like ? and f.ounces <= ? and f.price <= ? and f.brand_id = ?;";
+		
+		List<Flavor> flavorList = new ArrayList<>();
+
+		try (Connection c = ConnectionUtil.getConnectionFromEnv()) {
+			PreparedStatement ps = c.prepareStatement(sql);
+
+			ps.setString(1, "%" + name + "%");
+			ps.setInt(2, ounces);
+			ps.setFloat(3, price);
+			ps.setInt(4, id);
+			
+			ResultSet rs = ps.executeQuery();
+
+			while (rs.next()) {
+				
+				Flavor newFlavor = new Flavor();
+				newFlavor.setId(rs.getInt("id"));
+				newFlavor.setFlavor(rs.getString("name"));
+				newFlavor.setOunces(rs.getInt("ounces"));
+				newFlavor.setPrice(rs.getFloat("price"));
+				/*-
+				 *  to handle incompatible types of ref in database and Java Obj
+				 *  	- just set a "dummy object" with just the id set for
+				*/
+				
+				Brand brand = new Brand();
+				brand.setId(rs.getInt("brand_id"));
+				brand.setBrand(rs.getString("brand_name"));
+				newFlavor.setBrand(brand);
+
+				flavorList.add(newFlavor);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return flavorList;
+	}//end getFlavorByNameOuncesAndPrice
+	
 }//end FlavorPostgres

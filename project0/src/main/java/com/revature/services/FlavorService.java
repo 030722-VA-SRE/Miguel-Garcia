@@ -154,5 +154,83 @@ public class FlavorService {
 		
 	}//end
 	
+	public List<Flavor> getFlavorByNameWithBrandId(String name, int id) throws DatabaseException{
+		
+		List<Flavor> flavorList = fp.getFlavorByNameWithBrandId(name, id);
+		
+		if(flavorList.isEmpty()) {
+			throw new DatabaseException(name + " with id " + id +" was not found in the database");
+		}
+		
+		return flavorList;
+	}//end 
+	
+	public List<Flavor> getFlavorByOuncesWithBrandId(int ounces, int id) throws DatabaseException{
+		
+		List<Flavor> flavorList = fp.getFlavorByOuncesWithBrandId(ounces, id);
+		
+		if(flavorList.isEmpty()) {
+			throw new DatabaseException(ounces + " with id " + id +" was not found in the database");
+		}
+		
+		return flavorList;
+	}//end
+	
+	public List<Flavor> getFlavorByPriceWithBrandId(float price, int id) throws DatabaseException{
+		
+		List<Flavor> flavorList = fp.getFlavorByPriceWithBrandId(price, id);
+		
+		if(flavorList.isEmpty()) {
+			throw new DatabaseException(price + " was not found in the database");
+		}
+		
+		return flavorList;
+	}//end
+	
+	public List<Flavor> getFlavorByNameAndOuncesWithBrandId(String name, int ounces, int id) throws DatabaseException{
+		
+		List<Flavor> flavorList = fp.getFlavorByNameAndOuncesWithBrandId(name, ounces, id);
+		
+		if(flavorList.isEmpty()) {
+			throw new DatabaseException("flavors was not found in the database");
+		}
+		
+		return flavorList;
+	}//end
+	
+	public List<Flavor> getFlavorByNameAndPriceWithBrandId(String name, float price, int id) throws DatabaseException{
+		
+		List<Flavor> flavorList = fp.getFlavorByNameAndPriceWithBrandId(name, price, id);
+		
+		if(flavorList.isEmpty()) {
+			throw new DatabaseException("flavors was not found in the database");
+		}
+		
+		return flavorList;
+	}//end
+	
+	public List<Flavor> getFlavorByOuncesAndPriceWithBrandId(int ounces, float price, int id) throws DatabaseException{
+		
+		List<Flavor> flavorList = fp.getFlavorByOuncesAndPriceWithBrandId(ounces, price, id);
+		
+		if(flavorList.isEmpty()) {
+			throw new DatabaseException("flavors was not found in the database");
+		}
+		
+		return flavorList;
+		
+	}//end
+	
+	public List<Flavor> getFlavorByNameOuncesAndPriceWithBrandId(String name, int ounces, float price, int id) throws DatabaseException{
+		
+		List<Flavor> flavorList = fp.getFlavorByNameOuncesAndPriceWithBrandId(name, ounces, price, id);
+		
+		if(flavorList.isEmpty()) {
+			throw new DatabaseException("flavors was not found in the database");
+		}
+		
+		return flavorList;
+		
+	}//end
 	
 }//end FlavorService
