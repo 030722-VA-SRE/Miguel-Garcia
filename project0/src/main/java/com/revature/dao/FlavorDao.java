@@ -13,5 +13,7 @@ public interface FlavorDao {
 	public boolean updateFlavorPrice(Flavor flavor);
 	public boolean deleteFlavorById(int id);
 	public List<Flavor> getFlavorByName(String name);
+	public List<Flavor> getFlavorByOunces(int ounces);
+	public List<Flavor> getFlavorByPrice(float price);
 	
 }//end FlavorDao

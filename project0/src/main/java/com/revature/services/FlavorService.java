@@ -73,6 +73,39 @@ public class FlavorService {
 		}
 		
 		return true;
-	}
+	}// end deleteFlavorById
+	
+	public List<Flavor> getFlavorByName(String name) throws DatabaseException{
+		
+		List<Flavor> flavorList = fp.getFlavorByName(name);
+		
+		if(flavorList.isEmpty()) {
+			throw new DatabaseException(name + " was not found in the database");
+		}
+		
+		return flavorList;
+	}//end getFlavorByName
+
+	public List<Flavor> getFlavorByOunces(int ounces) throws DatabaseException{
+		
+		List<Flavor> flavorList = fp.getFlavorByOunces(ounces);
+		
+		if(flavorList.isEmpty()) {
+			throw new DatabaseException(ounces + " was not found in the database");
+		}
+		
+		return flavorList;
+	}//end getFlavorByOunces
+	
+	public List<Flavor> getFlavorByPrice(float price) throws DatabaseException{
+		
+		List<Flavor> flavorList = fp.getFlavorByPrice(price);
+		
+		if(flavorList.isEmpty()) {
+			throw new DatabaseException(price + " was not found in the database");
+		}
+		
+		return flavorList;
+	}//end getFlavorByOunces
 	
 }//end FlavorService

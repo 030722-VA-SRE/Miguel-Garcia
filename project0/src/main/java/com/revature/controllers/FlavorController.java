@@ -35,7 +35,47 @@ public class FlavorController {
 	
 	public static void getFlavor(Context ctx){
 		
-		ctx.json(fs.getAllFlavors());
+		String name = ctx.queryParam("name");
+		String ounces = ctx.queryParam("ounces");
+		String price = ctx.queryParam("price");
+		List<Flavor> f;
+		
+		if(name == null && ounces == null && price == null) {
+			ctx.json(fs.getAllFlavors());
+		}
+		else if (name != null && ounces == null && price == null) {
+			
+			try {
+				f = fs.getFlavorByName(name);
+				ctx.json(f);
+				ctx.status(HttpStatus.ACCEPTED_202);
+			}catch(DatabaseException e ) {
+				ctx.status(HttpStatus.NOT_FOUND_404);
+				ctx.result("Unable to find flavor with name: " + name);
+			}//end try catch
+		}//end 
+		else if (name == null && ounces != null && price == null) {
+			int o = Integer.parseInt(ounces);
+			try {
+				f = fs.getFlavorByOunces(o);
+				ctx.json(f);
+				ctx.status(HttpStatus.ACCEPTED_202);
+			}catch(DatabaseException e ) {
+				ctx.status(HttpStatus.NOT_FOUND_404);
+				ctx.result("Unable to find flavor with ounce: " + name);
+			}//end try catch
+		}//end
+		else if (name == null && ounces == null && price != null) {
+			float p = Float.parseFloat(price);
+			try {
+				f = fs.getFlavorByPrice(p);
+				ctx.json(f);
+				ctx.status(HttpStatus.ACCEPTED_202);
+			}catch(DatabaseException e ) {
+				ctx.status(HttpStatus.NOT_FOUND_404);
+				ctx.result("Unable to find flavor with price: " + name);
+			}//end try catch
+		}//end
 		
 	}//end getFlavors
 	
@@ -53,7 +93,7 @@ public class FlavorController {
 			
 		}catch(FlavorNotFoundException e){
 			ctx.status(HttpStatus.NOT_FOUND_404);
-			ctx.result("Unable to find flavor of id " + flavorId);
+			ctx.result("Unable to find flavor of id: " + flavorId);
 			
 			//logging
 			e.printStackTrace();
@@ -77,7 +117,7 @@ public class FlavorController {
 		}catch(DatabaseException e) {
 			
 			ctx.status(HttpStatus.NOT_FOUND_404);
-			ctx.result("Unable to find brand of id " + brandId);
+			ctx.result("Unable to find brand of id: " + brandId);
 			
 			//logging
 			e.printStackTrace();
@@ -103,7 +143,7 @@ public class FlavorController {
 		}catch(DatabaseException e) {
 			
 			ctx.status(HttpStatus.NOT_FOUND_404);
-			ctx.result("Unable to find brand to update");
+			ctx.result("Unable to find flavor to update");
 			
 		}//end catch
 		
