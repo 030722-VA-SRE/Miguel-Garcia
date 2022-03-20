@@ -43,7 +43,7 @@ Once you create an EC2, how to connect to it?
 
 What are Security Groups? When defining a rule for a security group, what 3 things do you need to specify?
 - A security group acts as a virtual firewall for your EC2 instances to control incoming and outgoing traffic based on their IP address
-- Source, Protocol, and Port range?
+- Source/Destination, Protocol, and Port range?
 
 What's the difference between scalability, elasticity, and resiliency?
 - 
