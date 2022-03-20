@@ -77,6 +77,54 @@ public class FlavorController {
 				ctx.result("Unable to find flavor with price: " + name);
 			}//end try catch
 		}//end
+		else if (name != null && ounces != null && price == null) {
+			int o = Integer.parseInt(ounces);
+			
+			try {
+				f = fs.getFlavorByNameAndOunces(name, o);
+				ctx.json(f);
+				ctx.status(HttpStatus.ACCEPTED_202);
+			}catch(DatabaseException e ) {
+				ctx.status(HttpStatus.NOT_FOUND_404);
+				ctx.result("Unable to find flavors");
+			}//end try catch
+		}//end
+		else if (name != null && ounces == null && price != null) {
+			float p = Float.parseFloat(price);
+			try {
+				f = fs.getFlavorByNameAndPrice(name, p);
+				ctx.json(f);
+				ctx.status(HttpStatus.ACCEPTED_202);
+			}catch(DatabaseException e ) {
+				ctx.status(HttpStatus.NOT_FOUND_404);
+				ctx.result("Unable to find flavors");
+			}//end try catch
+		}//end
+		
+		else if (name == null && ounces != null && price != null) {
+			int o = Integer.parseInt(ounces);
+			float p = Float.parseFloat(price);
+			try {
+				f = fs.getFlavorByOuncesAndPrice(o, p);
+				ctx.json(f);
+				ctx.status(HttpStatus.ACCEPTED_202);
+			}catch(DatabaseException e ) {
+				ctx.status(HttpStatus.NOT_FOUND_404);
+				ctx.result("Unable to find flavors");
+			}//end try catch
+		}//end
+		else {
+			int o = Integer.parseInt(ounces);
+			float p = Float.parseFloat(price);
+			try {
+				f = fs.getFlavorByNameOuncesAndPrice(name, o, p);
+				ctx.json(f);
+				ctx.status(HttpStatus.ACCEPTED_202);
+			}catch(DatabaseException e ) {
+				ctx.status(HttpStatus.NOT_FOUND_404);
+				ctx.result("Unable to find flavors");
+			}//end try catch
+		}//end else
 		
 	}//end getFlavors
 	

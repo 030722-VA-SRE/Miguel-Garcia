@@ -106,8 +106,53 @@ public class FlavorService {
 		}
 		
 		return flavorList;
-	}//end getFlavorByOunces
+	}//end 
+	
+	public List<Flavor> getFlavorByNameAndOunces(String name, int ounces) throws DatabaseException{
+		
+		List<Flavor> flavorList = fp.getFlavorByNameAndOunces(name, ounces);
+		
+		if(flavorList.isEmpty()) {
+			throw new DatabaseException("flavors was not found in the database");
+		}
+		
+		return flavorList;
+	}//end 
+	
+	public List<Flavor> getFlavorByNameAndPrice(String name, float price) throws DatabaseException{
+		
+		List<Flavor> flavorList = fp.getFlavorByNameAndPrice(name, price);
+		
+		if(flavorList.isEmpty()) {
+			throw new DatabaseException("flavors was not found in the database");
+		}
+		
+		return flavorList;
+	}//end 
+	
+	public List<Flavor> getFlavorByOuncesAndPrice(int ounces, float price) throws DatabaseException{
+		
+		List<Flavor> flavorList = fp.getFlavorByOuncesAndPrice(ounces, price);
+		
+		if(flavorList.isEmpty()) {
+			throw new DatabaseException("flavors was not found in the database");
+		}
+		
+		return flavorList;
+		
+	}//end
+	
+	public List<Flavor> getFlavorByNameOuncesAndPrice(String name, int ounces, float price) throws DatabaseException{
+		
+		List<Flavor> flavorList = fp.getFlavorByNameOuncesAndPrice(name, ounces, price);
+		
+		if(flavorList.isEmpty()) {
+			throw new DatabaseException("flavors was not found in the database");
+		}
+		
+		return flavorList;
+		
+	}//end
 	
 	
-
 }//end FlavorService
