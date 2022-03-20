@@ -25,7 +25,15 @@ How are you charged for using AWS services? Does it vary by service?
  - AWS pricing is based on your usage of each individual service
  - Yes, it does vary by service
 
+Different ways to interact with AWS services?
 
 # EC2
+
+What are the configuration options for EC2?
+- You can specify the Amazon Machine Image (AMI), instances type, key pair, and security groups etc..
+What are the different EC2 instance sizes/types?
+- To view more information about EC2 instance types click [here](https://aws.amazon.com/ec2/instance-types/?trk=36c6da98-7b20-48fa-8225-4784bced9843&sc_channel=ps&sc_campaign=acquisition&sc_medium=ACQ-P|PS-GO|Brand|Desktop|SU|Compute|EC2|US|EN|Text&s_kwcid=AL!4422!3!536392622533!e!!g!!ec2%20instance%20types&ef_id=CjwKCAjwoduRBhA4EiwACL5RP2UecZyKzvMTb8KVVzP0i3tFQkjPd0hhF2DMmGmAcaNblyhReh7N_xoCt-gQAvD_BwE:G:s&s_kwcid=AL!4422!3!536392622533!e!!g!!ec2%20instance%20types)
+Once you create an EC2, how to connect to it?
+
 
 # RDS
