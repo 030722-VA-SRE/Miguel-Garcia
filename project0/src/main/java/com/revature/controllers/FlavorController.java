@@ -33,6 +33,27 @@ public class FlavorController {
 		
 	}//end createFlavor
 	
+	public static void createFlavorAtBrand(Context ctx){
+		
+		Flavor newFlavor = ctx.bodyAsClass(Flavor.class);
+		
+		String pathParamId = ctx.pathParam("Id");
+		int id = Integer.parseInt(pathParamId);
+		newFlavor.getBrand().setId(id);
+		
+		try {
+			
+			fs.createFlavor(newFlavor);
+			ctx.status(HttpStatus.CREATED_201);
+			
+		}catch(DatabaseException e) {
+			
+			ctx.status(HttpStatus.BAD_REQUEST_400);
+			ctx.result("Unable to create flavor");
+			
+		}//end try catch
+	}//end 
+	
 	public static void getFlavor(Context ctx){
 		
 		String name = ctx.queryParam("name");
@@ -253,21 +274,6 @@ public class FlavorController {
 		String price = ctx.queryParam("price");
 		
 		List<Flavor> f;
-		
-		/*try {
-			
-			f = fs.getFlavorByBrandId(brandId);
-			ctx.json(f);
-			ctx.status(HttpStatus.ACCEPTED_202);
-			
-		}catch(DatabaseException e) {
-			
-			ctx.status(HttpStatus.NOT_FOUND_404);
-			ctx.result("Unable to find brand of id: " + brandId);
-			
-			//logging
-			e.printStackTrace();
-		}//end try catch*/
 		
 		if(name == null && ounces == null && price == null) {
 			try {

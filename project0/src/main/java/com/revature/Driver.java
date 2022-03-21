@@ -22,13 +22,7 @@ import io.javalin.*;
 public class Driver {
 
 	public static void main(String[] args) {
-		
-		/*FlavorDao fd = new FlavorPostgres();
-		
-		List<Flavor> f = fd.getFlavorByName("Onion");
-		
-		System.out.println(f.size());*/
-		
+				
 		Javalin app = Javalin.create((config) ->{
 			//pass any configuration associated with Javalin
 			config.defaultContentType = "application/json";
@@ -55,6 +49,7 @@ public class Driver {
 				path("{id}/flavors", () -> {
 					
 					get(FlavorController::getFlavorByBrandId);
+					post(FlavorController:: createFlavorAtBrand);
 					
 					path("{flavorId}", () -> {
 						
@@ -65,13 +60,7 @@ public class Driver {
 					});
 					
 				});
-				
-				/*path("{id}/flavors/{flavorId}", () -> {
-				
-					get(FlavorController:: getFlavorById);
-				
-				});*/
-				
+								
 			});//end path "brand"
 			
 			path("flavors", () ->{

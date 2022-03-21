@@ -52,7 +52,7 @@ public class FlavorService {
 		
 		return true;
 	}//end createFlavor
-	
+		
 	public boolean updateFlavorPrice(Flavor flavor) throws DatabaseException{
 		
 		boolean update = fp.updateFlavorPrice(flavor);

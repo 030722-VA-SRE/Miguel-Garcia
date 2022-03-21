@@ -152,7 +152,7 @@ public class FlavorPostgres implements FlavorDao{
 		}
 		return generatedId;
 		
-	}//end createFlavor
+	}//end createFlavor	
 		
 	public boolean updateFlavorPrice(Flavor flavor) {
 		String sql = "update flavor set price = ? where id = ?;";
