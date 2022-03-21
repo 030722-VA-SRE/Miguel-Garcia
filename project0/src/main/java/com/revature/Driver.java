@@ -38,6 +38,7 @@ public class Driver {
 				get(BrandController::getBrand);
 				post(BrandController::createBrand);
 				
+				//looking up brand by id
 				path("{id}", () -> {
 					
 					get(BrandController::getBrandById);
@@ -46,6 +47,7 @@ public class Driver {
 					
 				});//end path id
 				
+				//looking up flavors of the brand
 				path("{id}/flavors", () -> {
 					
 					get(FlavorController::getFlavorByBrandId);
@@ -63,6 +65,7 @@ public class Driver {
 								
 			});//end path "brand"
 			
+			//look up flavors
 			path("flavors", () ->{
 				get(FlavorController::getFlavor);
 				post(FlavorController::createFlavor);
