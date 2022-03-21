@@ -141,6 +141,7 @@ How are you charged for using AWS services? Does it vary by service?
  - Yes, it does vary by service
 
 Different ways to interact with AWS services?
+ - AWS provides command line tools and APis
 
 # EC2
 
@@ -166,6 +167,7 @@ What's the difference between scalability, elasticity, and resiliency?
 - Resilience: Having the capability to recover when stressed by load (more requests for service), attacks (either accidental through a bug, or deliberate through intention), and failure of any component in the workload's components
 
 Ways of paying for EC2?
+ - On-demand, pay by the second
 
 # RDS
 
@@ -174,3 +176,17 @@ What's an RDS?
 
 Which vendors are supported?
 - Amazon Aurora, PostgreSQL, MySQL, MariaDB, Oracle Database, and SQL Server
+
+# UNIX/LINUX
+
+Write a basic bash script
+
+	#! /bin/bash
+	#Adding two values
+	A=5
+	B=6
+
+	total=$((A+B))
+
+	echo $total
+
