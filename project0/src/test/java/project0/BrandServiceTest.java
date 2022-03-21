@@ -32,7 +32,7 @@ class BrandServiceTest {
 		
 		List<Brand> brandList = Arrays.asList(a,b,c);
 		
-		when(bMock.getAllBands()).thenReturn(brandList);
+		when(bMock.getAllBrands()).thenReturn(brandList);
 		assertEquals(brandList, bService.getAllBrands());
 		
 		
