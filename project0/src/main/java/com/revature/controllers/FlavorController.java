@@ -37,7 +37,7 @@ public class FlavorController {
 		
 		Flavor newFlavor = ctx.bodyAsClass(Flavor.class);
 		
-		String pathParamId = ctx.pathParam("Id");
+		String pathParamId = ctx.pathParam("id");
 		int id = Integer.parseInt(pathParamId);
 		newFlavor.getBrand().setId(id);
 		
