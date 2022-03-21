@@ -11,6 +11,12 @@ public class Brand {
 		super();
 	}
 	
+	public Brand(int id, String brand){
+		this();
+		this.id = id;
+		this.brand = brand;
+	}
+	
 	public int getId() {
 		return id;
 	}

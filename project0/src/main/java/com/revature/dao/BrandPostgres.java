@@ -37,7 +37,7 @@ public class BrandPostgres implements BrandDao{
 	}//end createBrand
 	
 	@Override
-	public List<Brand> getAllBands() {
+	public List<Brand> getAllBrands() {
 		String sql = "select * from brand order by id;";
 		List<Brand> brandList = new ArrayList<>();
 		

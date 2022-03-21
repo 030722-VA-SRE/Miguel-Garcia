@@ -15,11 +15,16 @@ public class BrandService {
 		
 	}//end BrandService
 	
+	//use for testing
+	public BrandService(BrandDao bp) {
+		this.bp = bp;
+	}//end BrandService
+	
 	public List<Brand> getAllBrands(){
 		
 		//if ArrayList size is empty
 		
-		return bp.getAllBands();
+		return bp.getAllBrands();
 		
 	}//end getAllBrands
 	
