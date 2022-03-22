@@ -12,6 +12,15 @@ public class Flavor{
 	public Flavor(){
 		brand = new Brand();
 	}
+	
+	public Flavor(int id, String flavor, int ounces, float price, Brand brand){
+		this();
+		this.id = id;
+		this.flavor = flavor;
+		this.ounces = ounces;
+		this.price = price;
+		this.brand = brand;
+	}//end 
 
 	public int getId() {
 		return id;

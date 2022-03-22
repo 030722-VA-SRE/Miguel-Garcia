@@ -15,6 +15,10 @@ public class FlavorService {
 		fp = new FlavorPostgres();
 	}//end constuctor
 	
+	//used for testing
+	public FlavorService(FlavorDao fp){
+		this.fp = fp;
+	}
 	public List<Flavor> getAllFlavors(){
 		return fp.getAllFlavors();
 	}//end getAllFlavors
