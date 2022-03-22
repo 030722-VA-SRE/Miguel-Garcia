@@ -12,7 +12,9 @@ import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.runner.RunWith;
 import org.mockito.Mockito;
+import org.mockito.junit.MockitoJUnitRunner;
 
 import com.revature.dao.FlavorDao;
 import com.revature.exceptions.DatabaseException;
@@ -20,7 +22,7 @@ import com.revature.exceptions.FlavorNotFoundException;
 import com.revature.models.Brand;
 import com.revature.models.Flavor;
 
-
+@RunWith(MockitoJUnitRunner.class)
 class FlavorServiceTest {
 
 	private static FlavorDao fMock;

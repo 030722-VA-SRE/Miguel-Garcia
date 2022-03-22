@@ -11,7 +11,9 @@ import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.runner.RunWith;
 import org.mockito.Mockito;
+import org.mockito.junit.MockitoJUnitRunner;
 
 import com.revature.dao.BrandDao;
 import com.revature.dao.BrandPostgres;
@@ -20,6 +22,7 @@ import com.revature.exceptions.DatabaseException;
 import com.revature.models.Brand;
 import com.revature.services.BrandService;
 
+@RunWith(MockitoJUnitRunner.class)
 class BrandServiceTest {
 	
 	private static BrandDao bMock;
