@@ -49,7 +49,7 @@ public class FlavorController {
 		}catch(DatabaseException e) {
 			
 			ctx.status(HttpStatus.BAD_REQUEST_400);
-			ctx.result("Unable to create flavor");
+			ctx.result("Unable to create flavor at brand " + id);
 			
 		}//end try catch
 	}//end 
@@ -85,7 +85,7 @@ public class FlavorController {
 				ctx.status(HttpStatus.ACCEPTED_202);
 			}catch(DatabaseException e ) {
 				ctx.status(HttpStatus.NOT_FOUND_404);
-				ctx.result("Unable to find flavor with ounce: " + name);
+				ctx.result("Unable to find flavor with ounces: " + ounces);
 			}//end try catch
 		}//end
 		else if (name == null && ounces == null && price != null && brand == null) {
@@ -96,7 +96,7 @@ public class FlavorController {
 				ctx.status(HttpStatus.ACCEPTED_202);
 			}catch(DatabaseException e ) {
 				ctx.status(HttpStatus.NOT_FOUND_404);
-				ctx.result("Unable to find flavor with price: " + name);
+				ctx.result("Unable to find flavor with price: " + price);
 			}//end try catch
 		}//end
 		else if (name != null && ounces != null && price == null && brand == null) {
@@ -108,7 +108,7 @@ public class FlavorController {
 				ctx.status(HttpStatus.ACCEPTED_202);
 			}catch(DatabaseException e ) {
 				ctx.status(HttpStatus.NOT_FOUND_404);
-				ctx.result("Unable to find flavors");
+				ctx.result("Unable to find flavors with name and ounces: " + name + ", " + ounces);
 			}//end try catch
 		}//end
 		else if (name != null && ounces == null && price != null && brand == null) {
@@ -119,7 +119,7 @@ public class FlavorController {
 				ctx.status(HttpStatus.ACCEPTED_202);
 			}catch(DatabaseException e ) {
 				ctx.status(HttpStatus.NOT_FOUND_404);
-				ctx.result("Unable to find flavors");
+				ctx.result("Unable to find flavors with name and price: " + name + ", " + price);
 			}//end try catch
 		}//end
 		

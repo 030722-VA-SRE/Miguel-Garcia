@@ -39,7 +39,7 @@ public class FlavorService {
 		
 		List<Flavor> flavorList = fp.getFlavorByBrandId(brand_id);
 		
-		if(flavorList.isEmpty()) {
+		if(flavorList == null) {
 			throw new DatabaseException(brand_id + " was not found in the database");
 		}
 		
@@ -83,7 +83,7 @@ public class FlavorService {
 		
 		List<Flavor> flavorList = fp.getFlavorByName(name);
 		
-		if(flavorList.isEmpty()) {
+		if(flavorList == null) {
 			throw new DatabaseException(name + " was not found in the database");
 		}
 		
@@ -94,7 +94,7 @@ public class FlavorService {
 		
 		List<Flavor> flavorList = fp.getFlavorByOunces(ounces);
 		
-		if(flavorList.isEmpty()) {
+		if(flavorList == null) {
 			throw new DatabaseException(ounces + " was not found in the database");
 		}
 		
@@ -105,7 +105,7 @@ public class FlavorService {
 		
 		List<Flavor> flavorList = fp.getFlavorByPrice(price);
 		
-		if(flavorList.isEmpty()) {
+		if(flavorList == null) {
 			throw new DatabaseException(price + " was not found in the database");
 		}
 		
@@ -116,7 +116,7 @@ public class FlavorService {
 		
 		List<Flavor> flavorList = fp.getFlavorByNameAndOunces(name, ounces);
 		
-		if(flavorList.isEmpty()) {
+		if(flavorList == null) {
 			throw new DatabaseException("flavors was not found in the database");
 		}
 		
@@ -127,7 +127,7 @@ public class FlavorService {
 		
 		List<Flavor> flavorList = fp.getFlavorByNameAndPrice(name, price);
 		
-		if(flavorList.isEmpty()) {
+		if(flavorList == null) {
 			throw new DatabaseException("flavors was not found in the database");
 		}
 		
@@ -138,7 +138,7 @@ public class FlavorService {
 		
 		List<Flavor> flavorList = fp.getFlavorByOuncesAndPrice(ounces, price);
 		
-		if(flavorList.isEmpty()) {
+		if(flavorList == null) {
 			throw new DatabaseException("flavors was not found in the database");
 		}
 		
@@ -150,7 +150,7 @@ public class FlavorService {
 		
 		List<Flavor> flavorList = fp.getFlavorByNameOuncesAndPrice(name, ounces, price);
 		
-		if(flavorList.isEmpty()) {
+		if(flavorList == null) {
 			throw new DatabaseException("flavors was not found in the database");
 		}
 		
@@ -162,7 +162,7 @@ public class FlavorService {
 		
 		List<Flavor> flavorList = fp.getFlavorByNameWithBrandId(name, id);
 		
-		if(flavorList.isEmpty()) {
+		if(flavorList == null) {
 			throw new DatabaseException(name + " with id " + id +" was not found in the database");
 		}
 		
@@ -173,7 +173,7 @@ public class FlavorService {
 		
 		List<Flavor> flavorList = fp.getFlavorByOuncesWithBrandId(ounces, id);
 		
-		if(flavorList.isEmpty()) {
+		if(flavorList == null) {
 			throw new DatabaseException(ounces + " with id " + id +" was not found in the database");
 		}
 		
@@ -184,7 +184,7 @@ public class FlavorService {
 		
 		List<Flavor> flavorList = fp.getFlavorByPriceWithBrandId(price, id);
 		
-		if(flavorList.isEmpty()) {
+		if(flavorList == null) {
 			throw new DatabaseException(price + " was not found in the database");
 		}
 		
@@ -195,7 +195,7 @@ public class FlavorService {
 		
 		List<Flavor> flavorList = fp.getFlavorByNameAndOuncesWithBrandId(name, ounces, id);
 		
-		if(flavorList.isEmpty()) {
+		if(flavorList == null) {
 			throw new DatabaseException("flavors was not found in the database");
 		}
 		
@@ -206,7 +206,7 @@ public class FlavorService {
 		
 		List<Flavor> flavorList = fp.getFlavorByNameAndPriceWithBrandId(name, price, id);
 		
-		if(flavorList.isEmpty()) {
+		if(flavorList == null) {
 			throw new DatabaseException("flavors was not found in the database");
 		}
 		
@@ -217,7 +217,7 @@ public class FlavorService {
 		
 		List<Flavor> flavorList = fp.getFlavorByOuncesAndPriceWithBrandId(ounces, price, id);
 		
-		if(flavorList.isEmpty()) {
+		if(flavorList == null) {
 			throw new DatabaseException("flavors was not found in the database");
 		}
 		
@@ -229,7 +229,7 @@ public class FlavorService {
 		
 		List<Flavor> flavorList = fp.getFlavorByNameOuncesAndPriceWithBrandId(name, ounces, price, id);
 		
-		if(flavorList.isEmpty()) {
+		if(flavorList == null) {
 			throw new DatabaseException("flavors was not found in the database");
 		}
 		
