@@ -3,11 +3,15 @@ package com.revature.dao;
 import java.sql.*;
 import java.util.*;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.revature.models.Brand;
 import com.revature.util.ConnectionUtil;
 
 public class BrandPostgres implements BrandDao{
 	
+	private static Logger log = LogManager.getRootLogger();
 	@Override
 	public int createBrand(Brand brand) {
 		// if -1 is returned, no record was created
@@ -31,7 +35,7 @@ public class BrandPostgres implements BrandDao{
 
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			log.error(e.getMessage());
 		}
 		return genId;
 	}//end createBrand
@@ -54,7 +58,7 @@ public class BrandPostgres implements BrandDao{
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			log.error(e.getMessage());
 		}
 		
 		return brandList;
@@ -80,7 +84,7 @@ public class BrandPostgres implements BrandDao{
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			log.error(e.getMessage());
 		}
 		return brand;
 		
@@ -101,7 +105,7 @@ public class BrandPostgres implements BrandDao{
 			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			log.error(e.getMessage());
 		}
 		
 		if(rowsChanged < 1) {
@@ -113,8 +117,15 @@ public class BrandPostgres implements BrandDao{
 	@Override
 	public boolean deleteBrandById(int id) {
 		String sql = "delete from brand where id = ?;";
+		String sql2 = "delete from flavor where brand_id = ?;";
+		
 		int rowsChanged = -1;
 		try(Connection c = ConnectionUtil.getConnectionFromEnv()){
+			//delete all of the flavors of brand id
+			PreparedStatement ps2 = c.prepareStatement(sql2);
+			ps2.setInt(1, id);
+			ps2.executeUpdate();
+			
 			PreparedStatement ps = c.prepareStatement(sql);
 			
 			ps.setInt(1, id);
@@ -123,7 +134,7 @@ public class BrandPostgres implements BrandDao{
 			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			log.error(e.getMessage());
 		}
 
 		if(rowsChanged < 1) {

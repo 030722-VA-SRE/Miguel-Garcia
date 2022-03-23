@@ -39,38 +39,38 @@ public class BrandService {
 		return brand;
 	}//end getBrandById
 	
-	public boolean createBrand(Brand brand) throws DatabaseException{
+	public boolean createBrand(Brand brand) throws InsertionFailureException{
 		
 		int genInt = bp.createBrand(brand);
 		
 		if(genInt == -1){
 			
-			throw new DatabaseException("Could not create brand");
+			throw new InsertionFailureException("Could not create brand");
 			
 		}//end if
 		
 		return true;
 	}//end createBrand
 	
-	public boolean updateBrand(Brand brand) throws DatabaseException{
+	public boolean updateBrand(Brand brand) throws BrandNotFoundException{
 		
 		boolean update = bp.updateBrand(brand);
 		
 		if(update == false) {
 			
-			throw new DatabaseException("Could not update brand: " + brand.getBrand());
+			throw new BrandNotFoundException("Could not update brand: " + brand.getBrand());
 		}
 		
 		return update;
 	}
 	
-	public boolean deleteBrandById(int id) throws DatabaseException{
+	public boolean deleteBrandById(int id) throws BrandNotFoundException{
 		
 		boolean delete = bp.deleteBrandById(id);
 		
 		if(delete == false) {
 			
-			throw new DatabaseException("Invalid id: " + id);
+			throw new BrandNotFoundException("Invalid id: " + id);
 		}
 		
 		return delete;

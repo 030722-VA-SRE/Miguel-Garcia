@@ -18,7 +18,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 import com.revature.dao.BrandDao;
 import com.revature.dao.BrandPostgres;
 import com.revature.exceptions.BrandNotFoundException;
-import com.revature.exceptions.DatabaseException;
+import com.revature.exceptions.InsertionFailureException;
 import com.revature.models.Brand;
 import com.revature.services.BrandService;
 
@@ -68,7 +68,7 @@ class BrandServiceTest {
 	}//end test
 	
 	@Test
-	public void createBrandTest() throws DatabaseException {
+	public void createBrandTest() throws InsertionFailureException {
 		
 		Brand a = new Brand(1, "Doritos");
 		
@@ -83,17 +83,13 @@ class BrandServiceTest {
 		Brand a = new Brand(1, "Doritos");
 		
 		when(bMock.createBrand(a)).thenReturn(-1);
-		Assertions.assertThrows(DatabaseException.class, ()-> bService.createBrand(a));
+		Assertions.assertThrows(InsertionFailureException.class, ()-> bService.createBrand(a));
 	}//end test
 	
 	@Test
-	public void updateBrandTest() throws DatabaseException {
+	public void updateBrandTest() throws BrandNotFoundException {
 	
 		Brand a = new Brand(1, "Doritos");
-		
-		bService.createBrand(a);
-		
-		a.setBrand("Cheetos");
 		
 		when(bMock.updateBrand(a)).thenReturn(true);
 		assertEquals(bService.updateBrand(a), true);
@@ -105,11 +101,11 @@ class BrandServiceTest {
 		Brand a = new Brand(1, "Doritos");
 		
 		when(bMock.updateBrand(a)).thenReturn(false);
-		Assertions.assertThrows(DatabaseException.class, ()-> bService.updateBrand(a));
+		Assertions.assertThrows(BrandNotFoundException.class, ()-> bService.updateBrand(a));
 	}//end test
 	
 	@Test
-	public void deleteBrandByIdTest() throws DatabaseException{
+	public void deleteBrandByIdTest() throws BrandNotFoundException{
 			
 		when(bMock.deleteBrandById(1)).thenReturn(true);
 		assertEquals(bService.deleteBrandById(1), true);
@@ -120,7 +116,7 @@ class BrandServiceTest {
 	@Test
 	public void deleteBrandByIdTestFail() {
 		when(bMock.deleteBrandById(1)).thenReturn(false);
-		Assertions.assertThrows(DatabaseException.class, ()-> bService.deleteBrandById(1));
+		Assertions.assertThrows(BrandNotFoundException.class, ()-> bService.deleteBrandById(1));
 	}
 	
 }//end BrandServiceTest

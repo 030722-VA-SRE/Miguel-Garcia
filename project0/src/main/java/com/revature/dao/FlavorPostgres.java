@@ -7,17 +7,22 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.*;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.revature.models.Brand;
 import com.revature.models.Flavor;
 import com.revature.util.ConnectionUtil;
 
 public class FlavorPostgres implements FlavorDao{
 	
+	private static Logger log = LogManager.getRootLogger();
+	
 	public List<Flavor> getAllFlavors() {
 		//String sql = "select * from flavor;";
 		String sql = "select f.id, f.name, f.ounces, f.price, f.brand_id, b.name as brand_name from flavor f join brand b on f.brand_id = b.id order by f.id;";
 		List<Flavor> flavorList = new ArrayList<>();
-
+		
 		try (Connection c = ConnectionUtil.getConnectionFromEnv()) {
 			Statement s = c.createStatement();
 			ResultSet rs = s.executeQuery(sql);
@@ -42,7 +47,7 @@ public class FlavorPostgres implements FlavorDao{
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			log.error(e.getMessage());
 		}
 		return flavorList;
 		
@@ -82,7 +87,7 @@ public class FlavorPostgres implements FlavorDao{
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			log.error(e.getMessage());
 		}
 		
 		return flavor;
@@ -122,7 +127,7 @@ public class FlavorPostgres implements FlavorDao{
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			log.error(e.getMessage());
 		}
 		return flavorList;
 		
@@ -148,7 +153,7 @@ public class FlavorPostgres implements FlavorDao{
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			log.error(e.getMessage());
 		}
 		return generatedId;
 		
@@ -168,7 +173,7 @@ public class FlavorPostgres implements FlavorDao{
 			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			log.error(e.getMessage());
 		}
 		if (rowsChanged < 1) {
 			return false;
@@ -191,7 +196,7 @@ public class FlavorPostgres implements FlavorDao{
 			rowsChanged = ps.executeUpdate();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			log.error(e.getMessage());
 		}
 		if (rowsChanged < 1) {
 			return false;
@@ -234,7 +239,7 @@ public class FlavorPostgres implements FlavorDao{
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			log.error(e.getMessage());
 		}
 		return flavorList;
 		
@@ -274,7 +279,7 @@ public class FlavorPostgres implements FlavorDao{
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			log.error(e.getMessage());
 		}
 		return flavorList;
 	}//end getFlavorByOunces
@@ -312,7 +317,7 @@ public class FlavorPostgres implements FlavorDao{
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			log.error(e.getMessage());
 		}
 		return flavorList;
 	}//end getFlavorByPrice
@@ -351,7 +356,7 @@ public class FlavorPostgres implements FlavorDao{
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			log.error(e.getMessage());
 		}
 		return flavorList;
 	}//end getFlavorByNameAndOunces
@@ -390,7 +395,7 @@ public class FlavorPostgres implements FlavorDao{
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			log.error(e.getMessage());
 		}
 		return flavorList;
 	}//end getFlavorByNameAndPrice
@@ -429,7 +434,7 @@ public class FlavorPostgres implements FlavorDao{
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			log.error(e.getMessage());
 		}
 		return flavorList;
 	}//end getFlavorByOuncesAndPrice
@@ -469,7 +474,7 @@ public class FlavorPostgres implements FlavorDao{
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			log.error(e.getMessage());
 		}
 		return flavorList;
 	}//end getFlavorByNameOuncesAndPrice
@@ -508,7 +513,7 @@ public class FlavorPostgres implements FlavorDao{
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			log.error(e.getMessage());
 		}
 		return flavorList;
 	}//end 
@@ -547,7 +552,7 @@ public class FlavorPostgres implements FlavorDao{
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			log.error(e.getMessage());
 		}
 		return flavorList;
 	}//end
@@ -586,7 +591,7 @@ public class FlavorPostgres implements FlavorDao{
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			log.error(e.getMessage());
 		}
 		return flavorList;
 	}//end getFlavorByPrice
@@ -626,7 +631,7 @@ public class FlavorPostgres implements FlavorDao{
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			log.error(e.getMessage());
 		}
 		return flavorList;
 	}//end getFlavorByNameAndOunces
@@ -666,7 +671,7 @@ public class FlavorPostgres implements FlavorDao{
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			log.error(e.getMessage());
 		}
 		return flavorList;
 	}//end getFlavorByNameAndPrice
@@ -706,7 +711,7 @@ public class FlavorPostgres implements FlavorDao{
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			log.error(e.getMessage());
 		}
 		return flavorList;
 	}//end getFlavorByOuncesAndPrice
@@ -747,7 +752,7 @@ public class FlavorPostgres implements FlavorDao{
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			log.error(e.getMessage());
 		}
 		return flavorList;
 	}//end getFlavorByNameOuncesAndPrice

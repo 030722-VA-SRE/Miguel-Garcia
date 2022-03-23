@@ -17,7 +17,7 @@ import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import com.revature.dao.FlavorDao;
-import com.revature.exceptions.DatabaseException;
+import com.revature.exceptions.InsertionFailureException;
 import com.revature.exceptions.FlavorNotFoundException;
 import com.revature.models.Brand;
 import com.revature.models.Flavor;
@@ -70,7 +70,7 @@ class FlavorServiceTest {
 	}//end
 	
 	@Test
-	void getFlavorByBrandId() throws DatabaseException{
+	void getFlavorByBrandId() throws FlavorNotFoundException{
 		Brand a = new Brand(1, "Cheetos");
 		
 		Flavor b = new Flavor(1,"Red", 10, 10, a);
@@ -87,11 +87,11 @@ class FlavorServiceTest {
 	@Test
 	void getFlavorByBrandIdFail() {
 		when(fMock.getFlavorByBrandId(1)).thenReturn(null);
-		Assertions.assertThrows(DatabaseException.class, () -> fService.getFlavorByBrandId(1));
+		Assertions.assertThrows(FlavorNotFoundException.class, () -> fService.getFlavorByBrandId(1));
 	}//end
 	
 	@Test
-	void createFlavor() throws DatabaseException{
+	void createFlavor() throws InsertionFailureException{
 		Brand a = new Brand(1, "Cheetos");
 		Flavor b = new Flavor(1,"Red", 10, 10, a);
 		
@@ -105,11 +105,11 @@ class FlavorServiceTest {
 		Flavor b = new Flavor(1,"Red", 10, 10, a);
 		
 		when(fMock.createFlavor(b)).thenReturn(-1);
-		Assertions.assertThrows(DatabaseException.class, () -> fService.createFlavor(b));
+		Assertions.assertThrows(InsertionFailureException.class, () -> fService.createFlavor(b));
 	}//end
 	
 	@Test
-	void updateFlavorPriceTest() throws DatabaseException {
+	void updateFlavorPriceTest() throws FlavorNotFoundException {
 		Brand a = new Brand(1, "Cheetos");
 		Flavor b = new Flavor(1,"Red", 10, 10, a);
 		
@@ -125,11 +125,11 @@ class FlavorServiceTest {
 		Flavor b = new Flavor(1,"Red", 10, 10, a);
 		
 		when(fMock.updateFlavorPrice(b)).thenReturn(false);
-		Assertions.assertThrows(DatabaseException.class, () -> fService.updateFlavorPrice(b));
+		Assertions.assertThrows(FlavorNotFoundException.class, () -> fService.updateFlavorPrice(b));
 	}
 	
 	@Test
-	void deleteFlavorByIdTest() throws DatabaseException{
+	void deleteFlavorByIdTest() throws FlavorNotFoundException{
 		
 		when(fMock.deleteFlavorById(1)).thenReturn(true);
 		assertEquals(fService.deleteFlavorById(1), true);
@@ -138,11 +138,11 @@ class FlavorServiceTest {
 	@Test
 	void deleteFlavorByIdTestFail() {
 		when(fMock.deleteFlavorById(1)).thenReturn(false);
-		Assertions.assertThrows(DatabaseException.class, () -> fService.deleteFlavorById(1));
+		Assertions.assertThrows(FlavorNotFoundException.class, () -> fService.deleteFlavorById(1));
 	}
 	
 	@Test
-	void getFlavorByNameTest() throws DatabaseException {
+	void getFlavorByNameTest() throws FlavorNotFoundException {
 		
 		List<Flavor> f = new ArrayList<>();
 		
@@ -158,12 +158,13 @@ class FlavorServiceTest {
 	
 	@Test
 	void getFlavorByNameTestFail() {
+		
 		when(fMock.getFlavorByName("name")).thenReturn(null);
-		Assertions.assertThrows(DatabaseException.class, () -> fService.getFlavorByName("name"));
+		Assertions.assertThrows(FlavorNotFoundException.class, () -> fService.getFlavorByName("name"));
 	}
 	
 	@Test
-	void getFlavorByOuncesTest() throws DatabaseException {		
+	void getFlavorByOuncesTest() throws FlavorNotFoundException {		
 		List<Flavor> f = new ArrayList<>();
 		Brand a = new Brand(1, "Cheetos");
 		Flavor b = new Flavor(1,"Red", 10, 10, a);
@@ -178,11 +179,11 @@ class FlavorServiceTest {
 	@Test
 	void getFlavorByOuncesTestFail() {
 		when(fMock.getFlavorByOunces(10)).thenReturn(null);
-		Assertions.assertThrows(DatabaseException.class, () -> fService.getFlavorByOunces(10));
+		Assertions.assertThrows(FlavorNotFoundException.class, () -> fService.getFlavorByOunces(10));
 	}
 	
 	@Test
-	void getFlavorByPriceTest() throws DatabaseException {		
+	void getFlavorByPriceTest() throws FlavorNotFoundException {		
 		List<Flavor> f = new ArrayList<>();
 		Brand a = new Brand(1, "Cheetos");
 		Flavor b = new Flavor(1,"Red", 10, 10, a);
@@ -196,11 +197,11 @@ class FlavorServiceTest {
 	@Test
 	void getFlavorByPriceTestFail() {
 		when(fMock.getFlavorByPrice(10)).thenReturn(null);
-		Assertions.assertThrows(DatabaseException.class, () -> fService.getFlavorByPrice(10));
+		Assertions.assertThrows(FlavorNotFoundException.class, () -> fService.getFlavorByPrice(10));
 	}
 
 	@Test
-	void getFlavorByNameAndOuncesTest() throws DatabaseException {		
+	void getFlavorByNameAndOuncesTest() throws FlavorNotFoundException {		
 		List<Flavor> f = new ArrayList<>();
 		Brand a = new Brand(1, "Cheetos");
 		Flavor b = new Flavor(1,"Red", 10, 10, a);
@@ -212,7 +213,7 @@ class FlavorServiceTest {
 	}//end
 	
 	@Test
-	void getFlavorByNameAndPriceTest() throws DatabaseException {		
+	void getFlavorByNameAndPriceTest() throws FlavorNotFoundException {		
 		List<Flavor> f = new ArrayList<>();
 		Brand a = new Brand(1, "Cheetos");
 		Flavor b = new Flavor(1,"Red", 10, 10, a);
@@ -224,7 +225,7 @@ class FlavorServiceTest {
 	}//end
 	
 	@Test
-	void getFlavorByOuncesAndPriceTest() throws DatabaseException {		
+	void getFlavorByOuncesAndPriceTest() throws FlavorNotFoundException {		
 		List<Flavor> f = new ArrayList<>();
 		Brand a = new Brand(1, "Cheetos");
 		Flavor b = new Flavor(1,"Red", 10, 10, a);
@@ -236,7 +237,7 @@ class FlavorServiceTest {
 	}//end
 	
 	@Test
-	void getFlavorByNameOuncesAndPriceTest() throws DatabaseException {		
+	void getFlavorByNameOuncesAndPriceTest() throws FlavorNotFoundException {		
 		List<Flavor> f = new ArrayList<>();
 		Brand a = new Brand(1, "Cheetos");
 		Flavor b = new Flavor(1,"Red", 10, 10, a);
@@ -248,7 +249,7 @@ class FlavorServiceTest {
 	}//end
 	
 	@Test
-	void getFlavorByNameWithBrandIdTest() throws DatabaseException {		
+	void getFlavorByNameWithBrandIdTest() throws FlavorNotFoundException {		
 		List<Flavor> f = new ArrayList<>();
 		Brand a = new Brand(1, "Cheetos");
 		Flavor b = new Flavor(1,"Red", 10, 10, a);
@@ -260,7 +261,7 @@ class FlavorServiceTest {
 	}//end
 	
 	@Test
-	void getFlavorByOuncesWithBrandIdTest() throws DatabaseException {		
+	void getFlavorByOuncesWithBrandIdTest() throws FlavorNotFoundException {		
 		List<Flavor> f = new ArrayList<>();
 		Brand a = new Brand(1, "Cheetos");
 		Flavor b = new Flavor(1,"Red", 10, 10, a);
@@ -272,7 +273,7 @@ class FlavorServiceTest {
 	}//end
 	
 	@Test
-	void getFlavorByPriceWithBrandIdTest() throws DatabaseException {		
+	void getFlavorByPriceWithBrandIdTest() throws FlavorNotFoundException {		
 		List<Flavor> f = new ArrayList<>();
 		Brand a = new Brand(1, "Cheetos");
 		Flavor b = new Flavor(1,"Red", 10, 10, a);
@@ -284,7 +285,7 @@ class FlavorServiceTest {
 	}//end
 	
 	@Test
-	void  getFlavorByNameAndOuncesWithBrandIdTest() throws DatabaseException {		
+	void  getFlavorByNameAndOuncesWithBrandIdTest() throws FlavorNotFoundException {		
 		List<Flavor> f = new ArrayList<>();
 		Brand a = new Brand(1, "Cheetos");
 		Flavor b = new Flavor(1,"Red", 10, 10, a);
@@ -296,7 +297,7 @@ class FlavorServiceTest {
 	}//end
 	
 	@Test
-	void  getFlavorByNameAndPriceWithBrandIdTest() throws DatabaseException {		
+	void  getFlavorByNameAndPriceWithBrandIdTest() throws FlavorNotFoundException {		
 		List<Flavor> f = new ArrayList<>();
 		Brand a = new Brand(1, "Cheetos");
 		Flavor b = new Flavor(1,"Red", 10, 10, a);
@@ -308,7 +309,7 @@ class FlavorServiceTest {
 	}//end
 	
 	@Test
-	void  getFlavorByOuncesAndPriceWithBrandIdTest() throws DatabaseException {		
+	void  getFlavorByOuncesAndPriceWithBrandIdTest() throws FlavorNotFoundException {		
 		List<Flavor> f = new ArrayList<>();
 		Brand a = new Brand(1, "Cheetos");
 		Flavor b = new Flavor(1,"Red", 10, 10, a);
@@ -320,7 +321,7 @@ class FlavorServiceTest {
 	}//end
 	
 	@Test
-	void  getFlavorByNameOuncesAndPriceWithBrandIdTest() throws DatabaseException {		
+	void  getFlavorByNameOuncesAndPriceWithBrandIdTest() throws FlavorNotFoundException {		
 		List<Flavor> f = new ArrayList<>();
 		Brand a = new Brand(1, "Cheetos");
 		Flavor b = new Flavor(1,"Red", 10, 10, a);

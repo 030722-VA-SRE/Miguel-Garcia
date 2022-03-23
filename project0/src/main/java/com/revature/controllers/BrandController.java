@@ -2,8 +2,11 @@ package com.revature.controllers;
 
 import org.eclipse.jetty.http.HttpStatus;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.revature.exceptions.BrandNotFoundException;
-import com.revature.exceptions.DatabaseException;
+import com.revature.exceptions.InsertionFailureException;
 import com.revature.models.Brand;
 import com.revature.services.BrandService;
 
@@ -12,6 +15,7 @@ import io.javalin.http.Context;
 public class BrandController {
 
 	private static BrandService bs = new BrandService();
+	private static Logger log = LogManager.getRootLogger();
 	
 	public static void createBrand(Context ctx) {
 		
@@ -20,10 +24,13 @@ public class BrandController {
 		try {
 			bs.createBrand(newBrand);
 			ctx.status(HttpStatus.CREATED_201);
+			ctx.result("Added brand to the database: " + newBrand.getBrand());
+			log.info("Added brand to the database" + newBrand.getBrand());
 			
-		}catch(DatabaseException e){
+		}catch(InsertionFailureException e){
 			ctx.status(HttpStatus.BAD_REQUEST_400);
-			ctx.result("Unable to create brand");
+			ctx.result("Unable to create brand " + newBrand.getBrand());
+			log.error("Exception thrown when trying to create a brand: " + newBrand.getBrand());
 		}//end try catch
 		
 	}//end CreateBrand
@@ -68,10 +75,13 @@ public class BrandController {
 		try {
 			bs.updateBrand(b);
 			ctx.status(HttpStatus.ACCEPTED_202);
+			ctx.result("Updated brand to " + b.getBrand());
+			log.info("Updated brand in database" + b.getBrand());
 			
-		}catch(DatabaseException e) {
+		}catch(BrandNotFoundException e) {
 			ctx.status(HttpStatus.NOT_FOUND_404);
-			ctx.result("Unable to find brand to update");
+			ctx.result(e.getMessage());
+			log.error("Exception thrown when trying to update brand");
 			
 		}//end try catch
 		
@@ -86,10 +96,12 @@ public class BrandController {
 			
 			bs.deleteBrandById(brandId);
 			ctx.status(HttpStatus.ACCEPTED_202);
-		
-		}catch(DatabaseException e) {
+			ctx.result("Remove brand: " + brandId);
+			log.info("Remove brand at id:" + brandId);
+		}catch(BrandNotFoundException e) {
 			ctx.status(HttpStatus.NOT_IMPLEMENTED_501);
 			ctx.result("delete task has not been implemented yet.");
+			log.error("Exception was thrown" + e.getMessage());
 		}
 		
 	}//end of deleteBrand
