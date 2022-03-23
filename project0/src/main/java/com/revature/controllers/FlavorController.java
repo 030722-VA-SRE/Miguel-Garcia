@@ -62,7 +62,7 @@ public class FlavorController {
 	
 	public static void getFlavor(Context ctx){
 		
-		String name = ctx.queryParam("name");
+		String name = ctx.queryParam("flavor");
 		String ounces = ctx.queryParam("ounces");
 		String price = ctx.queryParam("price");
 		String brand = ctx.queryParam("brandId");
@@ -72,6 +72,21 @@ public class FlavorController {
 		if(name == null && ounces == null && price == null && brand == null) {
 			ctx.json(fs.getAllFlavors());
 		}
+		else if (name == null && ounces == null && price == null && brand != null) {
+			try {
+				int b =Integer.parseInt(brand);
+				f = fs.getFlavorByBrandId(b);
+				ctx.json(f);
+				ctx.status(HttpStatus.ACCEPTED_202);
+			}catch(NumberFormatException e){
+				ctx.result("Invalid value: " + e.getMessage());
+				log.error(e.getMessage());
+			}catch(FlavorNotFoundException e ) {
+				ctx.status(HttpStatus.NOT_FOUND_404);
+				ctx.result(e.getMessage());
+				log.error("Exception thrown when trying to find brandId: " +  brand);
+			}
+		}//end
 		else if (name != null && ounces == null && price == null && brand == null) {
 			
 			try {
@@ -329,7 +344,7 @@ public class FlavorController {
 		String pathParam = ctx.pathParam("id");
 		int brandId = Integer.parseInt(pathParam);
 		
-		String name = ctx.queryParam("name");
+		String name = ctx.queryParam("flavor");
 		String ounces = ctx.queryParam("ounces");
 		String price = ctx.queryParam("price");
 		
