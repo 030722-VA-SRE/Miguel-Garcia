@@ -29,8 +29,8 @@ public class BrandController {
 	}//
 	
 	/*
-	 * There is no difference between in semantic between @GetMapping and @RequestMapping
-	 * @GetMappin is a composed annotation that acts as a shorcut for @RequestMapping(method = RequestMethod. GET)
+	 * There is no difference in semantic between @GetMapping and @RequestMapping
+	 * @GetMappin is a composed annotation that acts as a shortcut for @RequestMapping(method = RequestMethod. GET)
 	 */
 	@GetMapping
 	public ResponseEntity<List<Brand>> getBrands(){
