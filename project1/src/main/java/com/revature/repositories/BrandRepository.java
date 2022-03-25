@@ -11,8 +11,7 @@ import com.revature.models.Brand;
  */
 @Repository
 public interface BrandRepository extends JpaRepository<Brand, Integer>{
-	//JpaRepository<T,ID>
-	//T: Domain type that repository manages
-	//ID: type of the id of the entity that repository manages
-	//For Brand the id type is an Integer 
+	
+	public Brand findBrandByName(String name);
+	
 }//end interface

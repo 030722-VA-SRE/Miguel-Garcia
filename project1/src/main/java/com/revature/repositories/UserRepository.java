@@ -6,6 +6,6 @@ import com.revature.models.User;
 
 public interface UserRepository extends JpaRepository<User, Integer>{
 	
-	public User findUserByUserName(String userName);
+	public User findUserByUsername(String userName);
 	
 }//end interface

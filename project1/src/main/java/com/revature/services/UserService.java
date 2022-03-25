@@ -29,7 +29,7 @@ public class UserService {
 	public User createUser(User newUser){
 		
 		//check if user exits
-		User u = ur.findUserByUserName(newUser.getUsername());
+		User u = ur.findUserByUsername(newUser.getUsername());
 		if(u != null) {
 			throw new UserAlreadyExistException();
 		}//end

@@ -2,9 +2,13 @@ package com.revature.services;
 
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.revature.exceptions.BrandAlreadyExistException;
+import com.revature.exceptions.BrandNotFoundException;
 import com.revature.models.Brand;
 import com.revature.repositories.BrandRepository;
 
@@ -26,29 +30,49 @@ public class BrandService {
 	}//end
 	
 	//return all of the brands
-	public List<Brand> getBrands(){
+	public List<Brand> getAllBrands(){
 		return br.findAll();
 	}//end
 	
 	//create and adds brand to db
-	public Brand createBrand(Brand brand){
+	@Transactional
+	public Brand createBrand(Brand newBrand){
+		
+		Brand b = br.findBrandByName(newBrand.getName());
+		
+		if(b != null){
+			throw new BrandAlreadyExistException();
+		}//end if
+		
 		//save returns the saved entity
-		return br.save(brand);
+		return br.save(newBrand);
 	}//end
 	
 	public Brand getBrandById(int id){
-		return br.getById(id);
+		
+		Brand brand = br.findById(id).orElseThrow(BrandNotFoundException::new);
+		
+		return brand;
 		
 	}//end
 	
-	/*
-	public Brand updateBrand(Brand brand) {
+	@Transactional
+	public Brand updateBrand(int id, Brand brand) {
 		//Can use the save method to update brand
-	}
-	*/
+		
+		Brand b = br.findById(id).orElseThrow(BrandNotFoundException:: new);
+		brand.setId(b.getId());
+		
+		return br.save(brand); 
+	}//end
 	
+	
+	@Transactional
 	public void deleteBrandById(int id){
-		//Throw IllegalArgumentException if the given id is null
+		
+		//searches if brand is is database
+		br.findById(id).orElseThrow(BrandNotFoundException:: new);
+		
 		br.deleteById(id);
 	}
 }//end 

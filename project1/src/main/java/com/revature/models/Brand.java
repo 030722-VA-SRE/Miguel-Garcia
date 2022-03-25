@@ -22,7 +22,7 @@ public class Brand{
 	private int id;
 	//Column is used for adding the column the name in the table
 	@Column(nullable = false)
-	private String brand;
+	private String name;
 	
 	public Brand() {
 		super();
@@ -36,17 +36,20 @@ public class Brand{
 	public void setId(int id) {
 		this.id = id;
 	}
-	public String getBrand() {
-		return brand;
+
+	public String getName() {
+		return name;
 	}
-	public void setBrand(String brand) {
-		this.brand = brand;
+
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(brand, id);
+		return Objects.hash(id, name);
 	}
 
 
@@ -59,14 +62,16 @@ public class Brand{
 		if (getClass() != obj.getClass())
 			return false;
 		Brand other = (Brand) obj;
-		return Objects.equals(brand, other.brand) && id == other.id;
+		return id == other.id && Objects.equals(name, other.name);
 	}
 
 
 	@Override
 	public String toString() {
-		return "Brand [id=" + id + ", brand=" + brand + "]";
+		return "Brand [id=" + id + ", name=" + name + "]";
 	}
+
+	
 	
 	
 	
