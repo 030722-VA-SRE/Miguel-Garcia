@@ -64,7 +64,7 @@ public class BrandController {
 	}
 	
 	@DeleteMapping("/{id}")
-	public ResponseEntity<String> DeleteById(@PathVariable("id") int id) {
+	public ResponseEntity<String> deleteById(@PathVariable("id") int id) {
 		bs.deleteBrandById(id);
 		return new ResponseEntity<>("Brand was deleted", HttpStatus.OK);
 	}

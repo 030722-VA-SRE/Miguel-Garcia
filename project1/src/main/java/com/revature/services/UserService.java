@@ -62,14 +62,8 @@ public class UserService {
 	@Transactional
 	public void deleteUser(int id){
 		
-		try {	
-		UserDTO user = getUserById(id);
+		ur.findById(id).orElseThrow(UserNotFoundException:: new);
 		ur.deleteById(id);
-		
-		}catch(UserNotFoundException e){
-			
-		}
-		
 		
 	}
 	
