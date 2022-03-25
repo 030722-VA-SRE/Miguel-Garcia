@@ -7,6 +7,18 @@ public class ExceptionResponse {
 	private String message;
 	private LocalDateTime dateTime;
 	
+	public ExceptionResponse() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+	
+	public ExceptionResponse(String message, LocalDateTime dateTime) {
+		super();
+		this.message = message;
+		this.dateTime = dateTime;
+	}
+
+
 	public String getMessage() {
 		return message;
 	}
