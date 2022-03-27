@@ -15,7 +15,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.revature.models.Brand;
+import com.revature.models.Flavor;
 import com.revature.services.BrandService;
+import com.revature.services.FlavorService;
 
 
 //HTTp requests are handled by a controller
@@ -26,11 +28,12 @@ import com.revature.services.BrandService;
 public class BrandController {
 	
 	private BrandService bs;
-	
+	private FlavorService fs;
 	@Autowired
-	public BrandController(BrandService bs) {
+	public BrandController(BrandService bs, FlavorService fs) {
 		super();
 		this.bs = bs;
+		this.fs = fs;
 	}//
 	
 	/*
@@ -60,7 +63,7 @@ public class BrandController {
 	
 	@PutMapping("/{id}")
 	public ResponseEntity<Brand> updateUser(@RequestBody Brand brand, @PathVariable("id") int id) {
-		return new ResponseEntity<>(bs.updateBrand(id, brand), HttpStatus.CREATED);
+		return new ResponseEntity<>(bs.updateBrand(id, brand), HttpStatus.ACCEPTED);
 	}
 	
 	@DeleteMapping("/{id}")
@@ -69,5 +72,9 @@ public class BrandController {
 		return new ResponseEntity<>("Brand was deleted", HttpStatus.OK);
 	}
 	
+	@GetMapping("/{id}/flavors")
+	public ResponseEntity<List<Flavor>> findFlavorsByBrand(@PathVariable("id") int id){
+		return new ResponseEntity<>(fs.getFlavorByBrand(id), HttpStatus.OK);
+	}
 	
 }//end class

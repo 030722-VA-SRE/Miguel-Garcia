@@ -16,6 +16,7 @@ import org.hibernate.annotations.Check;
 
 @Entity
 @Table(name="flavor")
+@Check(constraints  = "ounces > 0 and price > 0")
 public class Flavor {
 	
 	@Id
@@ -24,14 +25,14 @@ public class Flavor {
 	
 	@Column(nullable = false)
 	private String name;
-	@Column(nullable = false, columnDefinition = "CHECK (ounces > 0)")
+	@Column(nullable = false)
 	private int ounces;
-	@Column(nullable = false, columnDefinition = "CHECK (price > 00.00)")
+	@Column(nullable = false)
 	private float price;
 	
 	@ManyToOne
 	@JoinColumn(nullable = false, name = "brand_id")
-	private Brand brandId;
+	private Brand brand;
 
 	public Flavor() {
 		super();
@@ -70,19 +71,20 @@ public class Flavor {
 		this.price = price;
 	}
 
-	public Brand getBrandId() {
-		return brandId;
+	public Brand getBrand() {
+		return brand;
 	}
 
-	public void setBrandId(Brand brandId) {
-		this.brandId = brandId;
+	public void setBrandId(Brand brand) {
+		this.brand = brand;
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(brandId, id, name, ounces, price);
+		return Objects.hash(brand, id, name, ounces, price);
 	}
-
+	
+	//This equals method compares everything but the id number
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -92,14 +94,14 @@ public class Flavor {
 		if (getClass() != obj.getClass())
 			return false;
 		Flavor other = (Flavor) obj;
-		return Objects.equals(brandId, other.brandId) && id == other.id && Objects.equals(name, other.name)
+		return Objects.equals(brand, other.brand) && Objects.equals(name, other.name)
 				&& ounces == other.ounces && Float.floatToIntBits(price) == Float.floatToIntBits(other.price);
 	}
 
 	@Override
 	public String toString() {
 		return "Flavor [id=" + id + ", name=" + name + ", ounces=" + ounces + ", price=" + price + ", brandId="
-				+ brandId + "]";
+				+ brand + "]";
 	}
 	
 }//end 

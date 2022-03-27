@@ -2,6 +2,7 @@ package com.revature.exceptions;
 
 import java.time.LocalDateTime;
 
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -39,6 +40,24 @@ public class CustomizedExceptionHandling extends ResponseEntityExceptionHandler{
 	public ResponseEntity<Object> handleBrandNotFoundException(BrandNotFoundException exception, WebRequest webRequest) {
 		
 		return new ResponseEntity<>(new ExceptionResponse("Brand not found", LocalDateTime.now()), HttpStatus.NOT_FOUND);
-	}//end 
+	}//end
+	
+	@ExceptionHandler(FlavorAlreadyExistException.class)
+	public ResponseEntity<Object> handleFlavorAlreadyExistException(FlavorAlreadyExistException exception, WebRequest webRequest){
+		
+		return new ResponseEntity<>(new ExceptionResponse("Flavor already exist", LocalDateTime.now()), HttpStatus.UNPROCESSABLE_ENTITY);
+	}//end
+	
+	@ExceptionHandler(FlavorNotFoundException.class)
+	public ResponseEntity<Object> handleFlavorNotFoundException(FlavorNotFoundException exception, WebRequest webRequest) {
+		
+		return new ResponseEntity<>(new ExceptionResponse("Flavor not found", LocalDateTime.now()), HttpStatus.NOT_FOUND);
+	}//end
+	
+	@ExceptionHandler(DataIntegrityViolationException.class)
+	public ResponseEntity<Object> handleDataIntegrityViolationException(DataIntegrityViolationException exception, WebRequest webRequest) {
+		
+		return new ResponseEntity<>(new ExceptionResponse("Data Integrity Violation", LocalDateTime.now()), HttpStatus.CONFLICT);
+	}//end
 	
 }//end
