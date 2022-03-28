@@ -1,6 +1,7 @@
 package com.revature.controllers;
 
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.revature.models.Flavor;
@@ -30,8 +32,18 @@ public class FlavorController {
 	}//end
 	
 	@GetMapping
-	public ResponseEntity<List<Flavor>> getAllFlavors(){
-		return new ResponseEntity<>(fs.getAllFlavors(), HttpStatus.OK);
+	public ResponseEntity<List<Flavor>> getAllFlavors(@RequestParam(required = false) String flavor, @RequestParam(required = false) Integer ounces, 
+			@RequestParam(required = false) Float price, @RequestParam(required = false) Integer brandId){
+		if(flavor != null || ounces != null || price !=null || brandId != null) {
+			
+			return new ResponseEntity<>(fs.getFlavorsWithQueryParams(flavor, ounces, price, brandId), HttpStatus.OK);
+		}
+		else {
+			
+			return new ResponseEntity<>(fs.getAllFlavors(), HttpStatus.OK);
+			
+		}//end
+		
 	}//end
 	
 	@PostMapping

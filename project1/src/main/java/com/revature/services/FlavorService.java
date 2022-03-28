@@ -1,7 +1,10 @@
 package com.revature.services;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
@@ -65,14 +68,14 @@ public class FlavorService {
 		return fr.findAll();
 	}//end
 	
-	public List<Flavor> getFlavorsByName(String name){
+	private List<Flavor> getFlavorsByName(String name){
 		
 		List<Flavor> flavors = getAllFlavors();
 		
 		List<Flavor> filteredList = new ArrayList<>();
 		
 		for(Flavor f: flavors){
-			if(f.getName().contains(name)){
+			if(f.getName().toLowerCase().contains(name.toLowerCase())){
 				filteredList.add(f);
 			}//end if
 			
@@ -86,7 +89,7 @@ public class FlavorService {
 		
 	}//end getFlavorsByName
 	
-	public List<Flavor> getFlavorByOunces(int ounces){
+	private List<Flavor> getFlavorsByOunces(int ounces){
 		List<Flavor> flavors = getAllFlavors();
 		
 		List<Flavor> filteredList = new ArrayList<>();
@@ -105,7 +108,7 @@ public class FlavorService {
 		return filteredList;
 	}//end 
 	
-	public List<Flavor> getFlavorByPrice(float price){
+	private List<Flavor> getFlavorsByPrice(float price){
 		List<Flavor> flavors = getAllFlavors();
 		
 		List<Flavor> filteredList = new ArrayList<>();
@@ -124,11 +127,65 @@ public class FlavorService {
 		return filteredList;
 	}//end
 	
-	public List<Flavor> getFlavorByBrand(int id){
+	private List<Flavor> getFlavorsByBrand(int id){
 		
 		Brand brand = br.findById(id).orElseThrow(BrandNotFoundException::new);
 		
 		return fr.findFlavorByBrand(brand);
+		
+	}//end
+	
+	//Look at the price
+	public List<Flavor> getFlavorsWithQueryParams(String name, Integer ounces, Float price, Integer brandId){
+		
+		List<List<Flavor>> listOfResults = new ArrayList<>();
+		List<Flavor> result;
+		
+		if(name != null){
+			
+			List<Flavor> nameList = getFlavorsByName(name);
+			listOfResults.add(nameList);
+			
+		}//end
+		if(ounces != null){
+			
+			List<Flavor> ouncesList = getFlavorsByOunces(ounces);
+			listOfResults.add(ouncesList);
+			
+		}//end
+		if(price != null){
+			
+			List<Flavor> priceList = getFlavorsByPrice(price);	
+			listOfResults.add(priceList);
+			
+		}//end
+		
+		if(brandId != null) {
+			
+			List<Flavor> brandList = getFlavorsByBrand(brandId);
+			listOfResults.add(brandList);
+			
+		}//end
+		
+		if(listOfResults.isEmpty()){
+			throw new FlavorNotFoundException();
+		}
+		
+		else if (listOfResults.size() == 1) {
+			result = listOfResults.get(0);
+		}
+		else {
+			result = listOfResults.get(0);
+			for(int i = 1; i < listOfResults.size(); i++){
+				result = result.stream().distinct().filter(listOfResults.get(i)::contains).toList();
+			}//end
+		}
+		
+		if(result.isEmpty()){
+			throw new FlavorNotFoundException();
+		}
+		
+		return result;
 		
 	}//end
 	

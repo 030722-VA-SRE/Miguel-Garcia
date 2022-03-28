@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.revature.models.Brand;
@@ -73,8 +74,9 @@ public class BrandController {
 	}
 	
 	@GetMapping("/{id}/flavors")
-	public ResponseEntity<List<Flavor>> findFlavorsByBrand(@PathVariable("id") int id){
-		return new ResponseEntity<>(fs.getFlavorByBrand(id), HttpStatus.OK);
+	public ResponseEntity<List<Flavor>> findFlavorsByBrand(@PathVariable("id") Integer id, @RequestParam(required = false) String flavor, @RequestParam(required = false) Integer ounces, 
+			@RequestParam(required = false) Float price){
+		return new ResponseEntity<>(fs.getFlavorsWithQueryParams(flavor, ounces, price, id), HttpStatus.OK);
 	}
 	
 }//end class
