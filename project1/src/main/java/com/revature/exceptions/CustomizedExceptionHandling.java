@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 /*
@@ -60,4 +61,9 @@ public class CustomizedExceptionHandling extends ResponseEntityExceptionHandler{
 		return new ResponseEntity<>(new ExceptionResponse("Data Integrity Violation", LocalDateTime.now()), HttpStatus.CONFLICT);
 	}//end
 	
+	@ExceptionHandler(MethodArgumentTypeMismatchException.class)
+	public ResponseEntity<Object> handleMethodArgumentTypeMismatchException(MethodArgumentTypeMismatchException exception, WebRequest webRequest) {
+		
+		return new ResponseEntity<>(new ExceptionResponse("Method argument type mismatch", LocalDateTime.now()), HttpStatus.BAD_REQUEST);
+	}//end
 }//end
