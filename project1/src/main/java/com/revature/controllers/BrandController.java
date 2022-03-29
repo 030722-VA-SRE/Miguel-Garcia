@@ -63,7 +63,7 @@ public class BrandController {
 	}
 	
 	@PutMapping("/{id}")
-	public ResponseEntity<Brand> updateUser(@RequestBody Brand brand, @PathVariable("id") int id) {
+	public ResponseEntity<Brand> updateBrand(@RequestBody Brand brand, @PathVariable("id") int id) {
 		return new ResponseEntity<>(bs.updateBrand(id, brand), HttpStatus.ACCEPTED);
 	}
 	
@@ -77,6 +77,29 @@ public class BrandController {
 	public ResponseEntity<List<Flavor>> findFlavorsByBrand(@PathVariable("id") Integer id, @RequestParam(required = false) String flavor, @RequestParam(required = false) Integer ounces, 
 			@RequestParam(required = false) Float price){
 		return new ResponseEntity<>(fs.getFlavorsWithQueryParams(flavor, ounces, price, id), HttpStatus.OK);
-	}
+	}//end
+	
+	
+	@PostMapping("/{id}/flavors")
+	public ResponseEntity<String> createFlavorWithBrandId(@RequestBody Flavor flavor, @PathVariable("id") int id) {
+		Flavor f = fs.createFlavorWithBrandId(flavor, id);
+		return new ResponseEntity<>("Brand " + f.getName() + " has been created.", HttpStatus.CREATED);
+	}//end
+	
+	@GetMapping("/{brand}/flavors/{id}")
+	public ResponseEntity<Flavor> getFlavorById(@PathVariable("id") int id){
+		return new ResponseEntity<>(fs.getFlavorById(id), HttpStatus.OK);
+	}//end
+	
+	@PutMapping("/{brand}/flavors/{id}")
+	public ResponseEntity<Flavor> updateFlavor(@RequestBody Flavor flavor, @PathVariable("id") int id){
+		return new ResponseEntity<>(fs.flavorUpdate(id, flavor), HttpStatus.ACCEPTED);
+	}//end
+	
+	@DeleteMapping("/{brand}/flavors/{id}")
+	public ResponseEntity<String> deleteFlavor(@PathVariable("id") int id){
+		fs.deleteFlavor(id);
+		return new ResponseEntity<>("Flavor was deleted", HttpStatus.OK);
+	}//end
 	
 }//end class

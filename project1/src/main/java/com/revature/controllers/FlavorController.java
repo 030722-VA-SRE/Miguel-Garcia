@@ -47,7 +47,7 @@ public class FlavorController {
 	}//end
 	
 	@PostMapping
-	public ResponseEntity<String> createUser(@RequestBody Flavor flavor) {
+	public ResponseEntity<String> createFlavor(@RequestBody Flavor flavor) {
 		Flavor f = fs.createFlavor(flavor);
 		return new ResponseEntity<>("Brand " + f.getName() + " has been created.", HttpStatus.CREATED);
 	}//end

@@ -50,6 +50,23 @@ public class FlavorService {
 	}//end 
 	
 	@Transactional
+	public Flavor createFlavorWithBrandId(Flavor newFlavor, int brandId) {
+		
+		Brand b = br.findById(brandId).orElseThrow(BrandNotFoundException::new);
+		newFlavor.setBrandId(b);
+		
+		List<Flavor> fL = getAllFlavors();
+		for(Flavor f: fL) {
+			if(f.equals(newFlavor)){
+				throw new FlavorAlreadyExistException();
+			}
+		}//end for
+		
+		return fr.save(newFlavor);
+		
+	}//end
+	
+	@Transactional
 	public Flavor flavorUpdate(int id, Flavor flavor){
 		
 		Flavor f = fr.findById(id).orElseThrow(FlavorNotFoundException::new);
@@ -135,7 +152,7 @@ public class FlavorService {
 		
 	}//end
 	
-	//Look at the price
+
 	public List<Flavor> getFlavorsWithQueryParams(String name, Integer ounces, Float price, Integer brandId){
 		
 		List<List<Flavor>> listOfResults = new ArrayList<>();
