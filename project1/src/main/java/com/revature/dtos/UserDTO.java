@@ -2,23 +2,26 @@ package com.revature.dtos;
 
 import java.util.Objects;
 
+import com.revature.models.Role;
 import com.revature.models.User;
 
 public class UserDTO {
 	
 	private int id;
 	private String username;
+	private Role role;
 	
 	public UserDTO() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public UserDTO(User user) {
+	public UserDTO(User u) {
 		super();
-		this.id = user.getId();
-		this.username = user.getUsername();
-	}//end constructor
+		this.id = u.getId();
+		this.username = u.getUsername();
+		this.role = u.getRole();
+	}
 
 	public int getId() {
 		return id;
@@ -36,9 +39,17 @@ public class UserDTO {
 		this.username = username;
 	}
 
+	public Role getRole() {
+		return role;
+	}
+
+	public void setRole(Role role) {
+		this.role = role;
+	}
+
 	@Override
 	public int hashCode() {
-		return Objects.hash(id, username);
+		return Objects.hash(id, role, username);
 	}
 
 	@Override
@@ -50,13 +61,15 @@ public class UserDTO {
 		if (getClass() != obj.getClass())
 			return false;
 		UserDTO other = (UserDTO) obj;
-		return id == other.id && Objects.equals(username, other.username);
+		return id == other.id && role == other.role && Objects.equals(username, other.username);
 	}
 
 	@Override
 	public String toString() {
-		return "UserDTO [id=" + id + ", username=" + username + "]";
+		return "UserDTO [id=" + id + ", username=" + username + ", role=" + role + "]";
 	}
+	
+	
 	
 
 }//end class

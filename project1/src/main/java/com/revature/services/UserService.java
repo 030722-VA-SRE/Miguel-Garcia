@@ -14,7 +14,7 @@ import com.revature.models.User;
 import com.revature.repositories.UserRepository;
 
 @Service
-public class UserService {
+public class UserService{
 	
 	private UserRepository ur;
 	
@@ -22,7 +22,7 @@ public class UserService {
 	public UserService(UserRepository ur) {
 		this.ur = ur;
 	}//end constructor
-	
+		
 	//@Transactional annotation is the metadata that specifies the semantics of the transactions on a method
 	//Look up isolation levels
 	@Transactional
@@ -66,5 +66,6 @@ public class UserService {
 		ur.deleteById(id);
 		
 	}
-	
+
+
 }//end UserSerevice
