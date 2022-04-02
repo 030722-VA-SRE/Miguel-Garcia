@@ -79,6 +79,7 @@
 	</dependencies>
 
 	<build>
+		<finalName>chip-shop</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
@@ -98,6 +99,14 @@
 				<profileActive>dev</profileActive>
 			</properties>
 		</profile>
+		<profile>
+			<id>prod</id>
+			<properties>
+				<build.profile.id>prod</build.profile.id>
+				<profileActive>prod</profileActive>
+			</properties>
+		</profile>
+		
 	</profiles>
 	
 </project>

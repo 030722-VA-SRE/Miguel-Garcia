@@ -194,7 +194,7 @@ public class FlavorService {
 		else {
 			result = listOfResults.get(0);
 			for(int i = 1; i < listOfResults.size(); i++){
-				result = result.stream().distinct().filter(listOfResults.get(i)::contains).toList();
+				result = result.stream().distinct().filter(listOfResults.get(i)::contains).collect(Collectors.toList());
 			}//end
 		}
 		
