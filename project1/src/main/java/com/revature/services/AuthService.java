@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.revature.dtos.UserDTO;
+import com.revature.exceptions.AuthenticationException;
+import com.revature.exceptions.AuthorizationException;
 import com.revature.models.User;
 import com.revature.repositories.UserRepository;
 
@@ -13,12 +15,14 @@ import com.revature.repositories.UserRepository;
 public class AuthService {
 	
 	private UserRepository ur;
-	private static Logger log = LoggerFactory.getLogger(AuthService.class);
+	private JWTUtil jwt;
+	private static Logger LOG = LoggerFactory.getLogger(AuthService.class);
 	
 	@Autowired
-	public AuthService(UserRepository ur) {
+	public AuthService(UserRepository ur, JWTUtil jwt) {
 		super();
 		this.ur = ur;
+		this.jwt = jwt;
 	}
 	
 	public UserDTO login(String username, String password) {
@@ -27,11 +31,64 @@ public class AuthService {
 		
 		// check that the uname and pass sent in req match the ones retrieved from db
 		if(principal == null || !password.equals(principal.getPassword())) {
-			// log for invalid credential/throw exception
-			return null;
+			throw new AuthenticationException("Attempted to login with username: " + username);
 		}
-		log.info("User succesfully logged in: id" + principal.getId()+ " name: "+ principal.getUsername());
+		LOG.info("User succesfully logged in: id" + principal.getId()+ " name: "+ principal.getUsername());
 		return new UserDTO(principal);
+	}//
+	
+	public String generateToken(UserDTO principal) {
+		
+		return jwt.generateToken(principal);
+	}
+	
+	public void verify(String token, int id){
+		
+		if(token == null) {
+			throw new AuthorizationException("null token");
+		}
+		
+		User principal = ur.findUserByUsername(jwt.extractUsername(token));
+		
+		if(principal != null && principal.getId() == id || principal.getRole().toString().equals("ADMIN")) {
+			LOG.info("Token verified successfully");
+		}//
+		else {
+			throw new AuthorizationException(principal.getUsername() + " does not have permission");
+		}//end
+		
+	}//end
+	
+	public boolean verifyAdmin(String token) {
+		
+		if(token == null) {
+			//throw new error
+		}//end 
+		
+		User principal = ur.findUserByUsername(jwt.extractUsername(token));
+		
+		if(principal == null || !principal.getRole().toString().equals("ADMIN")) {
+			//Log error
+			return false;
+		}
+		
+		return true;
+		
+	}//end verify
+	
+	public boolean verifyUser(String token, int id){
+		if(token == null) {
+			//throw new error
+		}//end 
+		
+		User principal = ur.findUserByUsername(jwt.extractUsername(token));
+		
+		if(principal == null || principal.getId() != id) {
+			//log
+			return false;
+		}//end
+		
+		return true;
 	}
 	
 

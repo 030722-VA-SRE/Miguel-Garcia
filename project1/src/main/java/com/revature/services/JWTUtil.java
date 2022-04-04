@@ -26,7 +26,6 @@ public class JWTUtil {
 		//Sets the JWT payload to be a JSON Claims instance
 		return Jwts.builder().setClaims(claims).setSubject(user.getUsername()).setIssuedAt(Date.from(Instant.now()))
 				.setExpiration(Date.from(Instant.now().plus(5, ChronoUnit.MINUTES)))
-				.claim("role", user.getRole())
 				.signWith(SignatureAlgorithm.HS256, SECRET_KEY).compact();
 				
 	}//end
@@ -49,10 +48,10 @@ public class JWTUtil {
 		return extractClaim(token, Claims::getSubject);
 	}
 	
-	public String extractRole(String token){
+	/*public String extractRole(String token){
 		Claims claims = Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token).getBody();
 		return claims.get("role").toString();
-	}
+	}*/
 	
 	public Date extractExpiration(String token){
 		return extractClaim(token, Claims::getExpiration);

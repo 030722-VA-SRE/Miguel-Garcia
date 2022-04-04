@@ -1,7 +1,6 @@
 package com.revature.controllers;
 
 import java.util.List;
-import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -12,11 +11,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.revature.models.Flavor;
+import com.revature.services.AuthService;
 import com.revature.services.FlavorService;
 
 @RestController
@@ -24,11 +25,12 @@ import com.revature.services.FlavorService;
 public class FlavorController {
 	
 	private FlavorService fs;
-	
+	private AuthService as;
 	@Autowired
-	public FlavorController(FlavorService fs) {
+	public FlavorController(FlavorService fs, AuthService as) {
 		super();
 		this.fs = fs;
+		this.as = as;
 	}//end
 	
 	@GetMapping
@@ -47,7 +49,8 @@ public class FlavorController {
 	}//end
 	
 	@PostMapping
-	public ResponseEntity<String> createFlavor(@RequestBody Flavor flavor) {
+	public ResponseEntity<String> createFlavor(@RequestBody Flavor flavor, @RequestHeader(value = "Authorization", required = false) String token) {
+		as.verify(token, 0);
 		Flavor f = fs.createFlavor(flavor);
 		return new ResponseEntity<>("Brand " + f.getName() + " has been created.", HttpStatus.CREATED);
 	}//end
@@ -58,12 +61,14 @@ public class FlavorController {
 	}//end
 	
 	@PutMapping("/{id}")
-	public ResponseEntity<Flavor> updateFlavor(@RequestBody Flavor flavor, @PathVariable("id") int id){
+	public ResponseEntity<Flavor> updateFlavor(@RequestBody Flavor flavor, @PathVariable("id") int id, @RequestHeader(value = "Authorization", required = false) String token){
+		as.verify(token, 0);
 		return new ResponseEntity<>(fs.flavorUpdate(id, flavor), HttpStatus.ACCEPTED);
 	}//end
 	
 	@DeleteMapping("/{id}")
-	public ResponseEntity<String> deleteFlavor(@PathVariable("id") int id){
+	public ResponseEntity<String> deleteFlavor(@PathVariable("id") int id, @RequestHeader(value = "Authorization", required = false) String token){
+		as.verify(token, 0);
 		fs.deleteFlavor(id);
 		return new ResponseEntity<>("Flavor was deleted", HttpStatus.OK);
 	}//end

@@ -41,7 +41,7 @@ public class BrandService {
 		Brand b = br.findBrandByName(newBrand.getName());
 		
 		if(b != null){
-			throw new BrandAlreadyExistException();
+			throw new BrandAlreadyExistException(b.getName() + " already exist");
 		}//end if
 		
 		//save returns the saved entity
@@ -50,9 +50,8 @@ public class BrandService {
 	
 	public Brand getBrandById(int id){
 		
-		Brand brand = br.findById(id).orElseThrow(BrandNotFoundException::new);
 		
-		return brand;
+		return br.findById(id).orElseThrow(() -> new BrandNotFoundException("No brand of id: " + id));
 		
 	}//end
 	
@@ -60,7 +59,7 @@ public class BrandService {
 	public Brand updateBrand(int id, Brand brand) {
 		//Can use the save method to update brand
 		
-		Brand b = br.findById(id).orElseThrow(BrandNotFoundException:: new);
+		Brand b = br.findById(id).orElseThrow(() -> new BrandNotFoundException("No brand of id: " + id));
 		brand.setId(b.getId());
 		
 		return br.save(brand); 
@@ -71,7 +70,7 @@ public class BrandService {
 	public void deleteBrandById(int id){
 		
 		//searches if brand is is database
-		br.findById(id).orElseThrow(BrandNotFoundException:: new);
+		//br.findById(id).orElseThrow(() -> new BrandNotFoundException("No brand of id: " + id));
 		
 		br.deleteById(id);
 	}

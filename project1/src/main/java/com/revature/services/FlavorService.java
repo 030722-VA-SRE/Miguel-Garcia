@@ -40,7 +40,7 @@ public class FlavorService {
 		for(Flavor f: fL) {
 			
 			if(f.equals(newflavor)){
-				throw new FlavorAlreadyExistException();
+				throw new FlavorAlreadyExistException("This product already exist: " + f.toString());
 				
 			}//end if
 			
@@ -58,7 +58,7 @@ public class FlavorService {
 		List<Flavor> fL = getAllFlavors();
 		for(Flavor f: fL) {
 			if(f.equals(newFlavor)){
-				throw new FlavorAlreadyExistException();
+				throw new FlavorAlreadyExistException("This product already exist for " + f.getBrand().getName());
 			}
 		}//end for
 		
@@ -69,7 +69,7 @@ public class FlavorService {
 	@Transactional
 	public Flavor flavorUpdate(int id, Flavor flavor){
 		
-		Flavor f = fr.findById(id).orElseThrow(FlavorNotFoundException::new);
+		Flavor f = fr.findById(id).orElseThrow(() -> new FlavorNotFoundException("Flavor id not found: " + id));
 		
 		flavor.setId(f.getId());
 		
@@ -78,7 +78,7 @@ public class FlavorService {
 	}//end
 
 	public Flavor getFlavorById(int id){
-		return fr.findById(id).orElseThrow(FlavorNotFoundException::new);
+		return fr.findById(id).orElseThrow(() -> new FlavorNotFoundException("Flavor id not found: " + id));
 	}//end
 	
 	public List<Flavor> getAllFlavors(){
@@ -99,7 +99,7 @@ public class FlavorService {
 		}//end for
 		
 		if(filteredList.isEmpty()){
-			throw new FlavorNotFoundException();
+			throw new FlavorNotFoundException("No flavors with the name: " + name);
 		}//end
 		
 		return filteredList;
@@ -119,7 +119,7 @@ public class FlavorService {
 		}//end for
 		
 		if(filteredList.isEmpty()){
-			throw new FlavorNotFoundException();
+			throw new FlavorNotFoundException("No flavor with ounces: " + ounces);
 		}//end
 		
 		return filteredList;
@@ -138,7 +138,7 @@ public class FlavorService {
 		}//end for
 		
 		if(filteredList.isEmpty()){
-			throw new FlavorNotFoundException();
+			throw new FlavorNotFoundException("No flavor with the prices: " + price);
 		}//end
 		
 		return filteredList;
@@ -146,7 +146,7 @@ public class FlavorService {
 	
 	private List<Flavor> getFlavorsByBrand(int id){
 		
-		Brand brand = br.findById(id).orElseThrow(BrandNotFoundException::new);
+		Brand brand = br.findById(id).orElseThrow(() -> new BrandNotFoundException("No brand found with id: " + id));
 		
 		return fr.findFlavorByBrand(brand);
 		
@@ -184,11 +184,8 @@ public class FlavorService {
 			
 		}//end
 		
-		if(listOfResults.isEmpty()){
-			throw new FlavorNotFoundException();
-		}
 		
-		else if (listOfResults.size() == 1) {
+		if (listOfResults.size() == 1) {
 			result = listOfResults.get(0);
 		}
 		else {
@@ -199,7 +196,7 @@ public class FlavorService {
 		}
 		
 		if(result.isEmpty()){
-			throw new FlavorNotFoundException();
+			throw new FlavorNotFoundException("No flavors found with the queryParams");
 		}
 		
 		return result;
@@ -209,7 +206,7 @@ public class FlavorService {
 	@Transactional
 	public void deleteFlavor(int id){
 		
-		fr.findById(id).orElseThrow(FlavorNotFoundException::new);
+		//fr.findById(id).orElseThrow(FlavorNotFoundException::new);
 		fr.deleteById(id);
 		
 	}//end

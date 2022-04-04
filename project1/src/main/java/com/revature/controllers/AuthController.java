@@ -1,5 +1,6 @@
 package com.revature.controllers;
 
+import org.jboss.logging.MDC;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -19,12 +20,11 @@ import com.revature.services.JWTUtil;
 public class AuthController {
 	
 	private AuthService as;
-	private JWTUtil jwt;
+
 	@Autowired
 	public AuthController(AuthService as, JWTUtil jwt) {
 		super();
 		this.as = as;
-		this.jwt = jwt;
 	}//end
 
 	@PostMapping
@@ -39,11 +39,15 @@ public class AuthController {
 		//generate token
 		HttpHeaders hh = new HttpHeaders();
 		
-		String token = jwt.generateToken(principle);
+		String token = as.generateToken(principle);
+		
+		//MDC.put("userAuth", token);
+		
 		hh.set("Authorization", token);
 		
 		return new ResponseEntity<>(principle, HttpStatus.ACCEPTED);
 	}//end
+	
 	
 	
 	
