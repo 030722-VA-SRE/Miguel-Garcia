@@ -1,10 +1,11 @@
 version: "3.8"
 
 services:
+
   chip-shop:
     build: .
     ports: 
-      - 8081:8080
+      - 8080:8080
     environment:
       - DB_URL
       - DB_USER
@@ -27,7 +28,7 @@ services:
   
   promtail:
     image: grafana/promtail:latest
-    container_name: logging-promtail
+    container_name: promtail-container
     volumes:
       - ./promtail/promtail-docker-config.yml:/etc/promtail/docker-config.yaml
       - ./logs/application.log:/var/log/application.log
@@ -41,18 +42,30 @@ services:
       
   grafana:
     image: grafana/grafana:latest
-    container_name: logging-grafana
+    container_name: grafana-container
     volumes:
       - grafana-data:/var/lib/grafana
     ports:
       - 3000:3000
     depends_on:
       - loki
+      
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus-container
+    ports:
+      - 9090:9090
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus-data:/prometheus 
 
 volumes:
   db-data:
     driver: local
     
   grafana-data:
+    driver: local
+    
+  prometheus-data:
     driver: local
     

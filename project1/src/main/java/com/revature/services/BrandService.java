@@ -70,7 +70,7 @@ public class BrandService {
 	public void deleteBrandById(int id){
 		
 		//searches if brand is is database
-		//br.findById(id).orElseThrow(() -> new BrandNotFoundException("No brand of id: " + id));
+		br.findById(id).orElseThrow(() -> new BrandNotFoundException("No brand of id: " + id));
 		
 		br.deleteById(id);
 	}

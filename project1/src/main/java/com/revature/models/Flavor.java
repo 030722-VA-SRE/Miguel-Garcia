@@ -39,6 +39,17 @@ public class Flavor {
 		// TODO Auto-generated constructor stub
 	}
 
+	public Flavor(int id, String name, int ounces, float price, Brand brand) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.ounces = ounces;
+		this.price = price;
+		this.brand = brand;
+	}
+
+
+
 	public int getId() {
 		return id;
 	}
