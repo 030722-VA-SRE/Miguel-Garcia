@@ -2,8 +2,8 @@ package com.revature.services;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.RETURNS_DEEP_STUBS;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -17,7 +17,6 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.revature.exceptions.BrandNotFoundException;
-import com.revature.exceptions.FlavorAlreadyExistException;
 import com.revature.exceptions.FlavorNotFoundException;
 import com.revature.models.Brand;
 import com.revature.models.Flavor;
@@ -109,16 +108,80 @@ class TestFlavorService {
 		Brand a = new Brand(1, "Cheetos");
 		Flavor b = new Flavor(1,"Red", 10, 10, a);
 		
-		boolean thrown = false;
-				
-		try {
-			fs.flavorUpdate(1, b);
-		}catch(FlavorNotFoundException e) {
-			thrown = true;
-		}
+		Assertions.assertThrows(FlavorNotFoundException.class, () -> fs.flavorUpdate(1, b));
 		
-		assertTrue(thrown);
 	}//end
+	
+	@Test
+	void queryParamNameTest(){
+		
+		Brand a = new Brand(1, "Cheetos");
+		
+		Flavor b = new Flavor(1,"Red", 10, 10, a);
+		
+		List<Flavor> fList = new ArrayList<>();
+		fList.add(b);
+		
+		Mockito.when(fr.findAll()).thenReturn(fList);
+		
+		assertEquals(fs.getFlavorsWithQueryParams("Red", null, null, null), fList);		
+		
+	}//end
+	
+	@Test
+	void queryParamOuncesTest(){
+		
+		Brand a = new Brand(1, "Cheetos");
+		
+		Flavor b = new Flavor(1,"Red", 10, 10, a);
+		
+		List<Flavor> fList = new ArrayList<>();
+		fList.add(b);
+		
+		Mockito.when(fr.findAll()).thenReturn(fList);
+		
+		assertEquals(fs.getFlavorsWithQueryParams(null, 10, null, null), fList);		
+		
+	}//end
+	
+	@Test
+	void queryParamPriceTest(){
+		
+		Brand a = new Brand(1, "Cheetos");
+		
+		Flavor b = new Flavor(1,"Red", 10, 10, a);
+		
+		List<Flavor> fList = new ArrayList<>();
+		fList.add(b);
+		
+		Mockito.when(fr.findAll()).thenReturn(fList);
+		
+		assertEquals(fs.getFlavorsWithQueryParams(null, null, 10f, null), fList);		
+		
+	}//end
+	
+	@Test
+	void queryParamBrandIdTest(){
+		
+		Brand a = new Brand(1, "Cheetos");
+		
+		Flavor b = new Flavor(1,"Red", 10, 10, a);
+		
+		List<Flavor> fList = new ArrayList<>();
+		fList.add(b);
+		
+		Mockito.when(br.save(a)).thenReturn(a);
+		Mockito.when(br.findById(1)).thenReturn(Optional.of(a));
+		Mockito.when(fr.findAll()).thenReturn(fList);
+		
+		assertEquals(fs.getFlavorsWithQueryParams(null, null, null, 1), fList);		
+		
+	}//end
+	
+	@Test
+	void queryParamFailTest() {
+		Assertions.assertThrows(FlavorNotFoundException.class, () -> fs.getFlavorsWithQueryParams("Red", null, null, null));
+	}
 	
 	
 	

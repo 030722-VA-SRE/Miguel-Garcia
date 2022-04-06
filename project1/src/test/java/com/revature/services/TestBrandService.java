@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -92,15 +93,7 @@ class TestBrandService {
 	@Test
 	void getBrandByIdFailTest(){
 		
-		boolean thrown = false;
-		
-		try {
-			bs.getBrandById(1);
-		}catch(BrandNotFoundException e){
-			thrown = true;
-		}//end
-		
-		assertTrue(thrown);
+		Assertions.assertThrows(BrandNotFoundException.class, () -> bs.getBrandById(1));
 		
 	}//end
 	
@@ -122,16 +115,7 @@ class TestBrandService {
 		
 		Brand b = new Brand(1, "Test");
 		
-		boolean thrown = false;
-		
-		try {
-			bs.updateBrand(1, b);
-		}catch(BrandNotFoundException e){
-			thrown = true;
-		}//end
-		
-		assertTrue(thrown);
-		
+		Assertions.assertThrows(BrandNotFoundException.class, () -> bs.updateBrand(1, b));
 	}//end
 		
 	
