@@ -51,11 +51,6 @@ public class JWTUtil {
 		return extractClaim(token, Claims::getSubject);
 	}
 	
-	/*public String extractRole(String token){
-		Claims claims = Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token).getBody();
-		return claims.get("role").toString();
-	}*/
-
 	public Date extractExpiration(String token){
 		return extractClaim(token, Claims::getExpiration);
 	}

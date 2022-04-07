@@ -42,16 +42,7 @@ public class UserController {
 	@GetMapping
 	public ResponseEntity<List<UserDTO>> getAllUsers(@RequestHeader(value = "Authorization", required = false) String token){
 
-		/*if(token == null) {
-			LOG.warn("Not authorized");
-			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
-		}//end
-		*/
-		Claims claims = as.verify(token);		
-		if(!claims.get("role").equals("ADMIN")){
-			LOG.warn(claims.getSubject() + " is not authorizd for get get:/users");
-			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
-		}
+		as.verify(token, -1);
 		
 		LOG.info("Users retrieved");
 		return new ResponseEntity<>(us.getAllUsers(), HttpStatus.OK);
@@ -60,71 +51,43 @@ public class UserController {
 	@PostMapping
 	public ResponseEntity<String> createUser(@RequestBody User user, @RequestHeader(value = "Authorization", required = false) String token) {
 		
-		/*if(token == null) {
-			LOG.warn("Not authorized");
-			return new ResponseEntity<>("Needs authorization to create a new user", HttpStatus.FORBIDDEN);
-		}//end
-		*/
-		Claims claims = as.verify(token);
-		if(!claims.get("role").equals("ADMIN")){
-			LOG.warn(claims.getSubject() + " is not authorizd to create a new user");
-			return new ResponseEntity<>(claims.getSubject() + " is not authorizd to create a new user", HttpStatus.FORBIDDEN);
-		}//end
-		
+		as.verify(token, -1);
 		
 		User u = us.createUser(user);
-		LOG.info(claims.getSubject() + " create a new user");
+		LOG.info("New user created");
 		return new ResponseEntity<>("User " + u.getUsername() + " has been created.", HttpStatus.CREATED);
 	}
 	
 	@GetMapping("/{id}")
 	public ResponseEntity<UserDTO> getUserById(@PathVariable("id") Integer id, @RequestHeader(value = "Authorization", required = false) String token){
 
-		Claims claim = as.verify(token);
-		if(claim.get("id").equals(id) || claim.get("role").equals("ADMIN")) {
+		as.verify(token, id);
 			
-			return new ResponseEntity<>(us.getUserById(id), HttpStatus.OK);
+		return new ResponseEntity<>(us.getUserById(id), HttpStatus.OK);
 			
-		}else {
-			LOG.warn(claim.getSubject() + " does not have the authorization to view users/" + id.intValue());
-			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
-		}
-		
 	}//end 
 	
 	@PutMapping("/{id}")
 	public ResponseEntity<User> updateUser(@RequestBody User user, @PathVariable("id") Integer id, @RequestHeader(value = "Authorization", required = false) String token){
 				
 		
-		Claims claim = as.verify(token);
-		if(claim.get("id").equals(id) || claim.get("role").equals("ADMIN")) {
+			as.verify(token, -1);
 			
+			User u = us.updateUser(id, user);
 			LOG.info("User was updated: {}", user.getUsername());
-			return new ResponseEntity(us.updateUser(id, user), HttpStatus.OK);
-			
-		}else {
-			LOG.warn(claim.getSubject() + " does not have the authorization to update users/" + id.intValue());
-			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
-		}
+			return new ResponseEntity<>(u, HttpStatus.OK);
 		
 	}
 	
 	@DeleteMapping("/{id}")
 	public ResponseEntity<String> deleteById(@PathVariable("id") Integer id, @RequestHeader(value = "Authorization", required = false) String token){
 		
-		Claims claim = as.verify(token);
-
-		if(claim.get("id").equals(id) || claim.get("role").equals("ADMIN")) {
+		as.verify(token, -1);
 			
-			us.deleteUser(id);
-			LOG.info("Deleted user at id: " + id.intValue());
-			return new ResponseEntity<>("User was deleted", HttpStatus.OK);
+		us.deleteUser(id);
+		LOG.info("Deleted user at id: " + id.intValue());
+		return new ResponseEntity<>("User was deleted", HttpStatus.OK);
 			
-		}else {
-			LOG.warn(claim.getSubject() + " does not have the authorization to delete users/" + id.intValue());
-			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
-		}
-
 	}
 	
 }//end

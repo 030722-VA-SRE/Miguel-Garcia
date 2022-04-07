@@ -28,7 +28,7 @@ public class AuthController {
 	}//end
 
 	@PostMapping
-	public ResponseEntity<UserDTO> login(@RequestParam("username") String username, @RequestParam("password") String password){
+	public ResponseEntity<String> login(@RequestParam("username") String username, @RequestParam("password") String password){
 		
 		UserDTO principle = as.login(username, password);
 		
@@ -41,11 +41,11 @@ public class AuthController {
 		
 		String token = as.generateToken(principle);
 		
-		//MDC.put("userAuth", token);
-		
+		MDC.put("userAuth", token);
+	
 		hh.set("Authorization", token);
 		
-		return new ResponseEntity<>(principle, HttpStatus.ACCEPTED);
+		return new ResponseEntity<>("Login successful\nAuth token: " + token, HttpStatus.ACCEPTED);
 	}//end
 	
 	

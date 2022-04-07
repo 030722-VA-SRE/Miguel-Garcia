@@ -1,5 +1,6 @@
 package com.revature.services;
 
+import org.jboss.logging.MDC;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -77,6 +78,43 @@ public class AuthService {
 		}
 		
 		return jwt.extractAllClaims(token);
+		
+	}//end
+	
+	public boolean verify(String token, Integer id) {
+		
+		if(token == null) {
+			LOG.warn("Not authorized");
+			throw new AuthenticationException("Not authorized");
+		}//end
+		
+		Claims claim = jwt.extractAllClaims(token);
+		/*
+		 * id = -1 only admins have authorization
+		 * id 
+		 */
+		if(id.equals(-1) && claim.get("role").equals("ADMIN")){
+			LOG.info("token verified successfully");
+			MDC.put("userId", claim.get("id"));
+			return true;
+		}//end
+		
+		if(id.equals(0) && claim.get("role").equals("USER") || claim.get("role").equals("ADMIN")) {
+			LOG.info("token verified successfully");
+			MDC.put("userId", claim.get("id"));
+			return true;
+		}
+		
+		if(claim.get("id").equals(id) || claim.get("role").equals("ADMIN")){
+			LOG.info("token verified successfully");
+			MDC.put("userId", claim.get("id"));
+			return true;
+		}
+		else {
+			LOG.warn(claim.getSubject() + " is not authorized for this request");
+			throw new AuthenticationException(claim.getSubject() + " not authorized");
+		}
+				
 		
 	}//end
 	
