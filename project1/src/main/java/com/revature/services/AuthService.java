@@ -28,7 +28,7 @@ public class AuthService {
 		this.jwt = jwt;
 	}
 	
-	public String login(String username, String password) {
+	public UserDTO login(String username, String password) {
 		// retrieve user from db by username, returns null if does not exist
 		User principal = ur.findUserByUsername(username);
 		
@@ -37,7 +37,7 @@ public class AuthService {
 			throw new AuthenticationException("Attempted to login with username: " + username);
 		}
 		LOG.info("User succesfully logged in: id" + principal.getId()+ " name: "+ principal.getUsername());
-		return generateToken(new UserDTO(principal));
+		return new UserDTO(principal);
 	}//
 	
 	public String register(User user){

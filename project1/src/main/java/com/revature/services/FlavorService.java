@@ -8,6 +8,8 @@ import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,6 +27,7 @@ public class FlavorService {
 	private FlavorRepository fr;
 	private BrandRepository br;
 	
+	private static Logger LOG =LoggerFactory.getLogger(FlavorService.class);
 	@Autowired
 	public FlavorService(FlavorRepository fr, BrandRepository br) {
 		super();
@@ -78,7 +81,12 @@ public class FlavorService {
 	}//end
 
 	public Flavor getFlavorById(int id){
-		return fr.findById(id).orElseThrow(() -> new FlavorNotFoundException("Flavor id not found: " + id));
+		
+		Flavor f = fr.findById(id).orElseThrow(() -> new FlavorNotFoundException("Flavor id not found: " + id));
+		
+		LOG.info("Flavor id: " + id + " Chip: " + f.getBrand().getName() + " " + f.getName());
+		
+		return f;
 	}//end
 	
 	public List<Flavor> getAllFlavors(){
@@ -102,6 +110,8 @@ public class FlavorService {
 			throw new FlavorNotFoundException("No flavors with the name: " + name);
 		}//end
 		
+		LOG.info("Looked up " + name + " flavored chips");
+		
 		return filteredList;
 		
 	}//end getFlavorsByName
@@ -122,6 +132,8 @@ public class FlavorService {
 			throw new FlavorNotFoundException("No flavor with ounces: " + ounces);
 		}//end
 		
+		LOG.info("Looked up " + ounces + " oz chips");
+		
 		return filteredList;
 	}//end 
 	
@@ -141,12 +153,16 @@ public class FlavorService {
 			throw new FlavorNotFoundException("No flavor with the prices: " + price);
 		}//end
 		
+		LOG.info("Looked up $" + price + " bag of chips");
+		
 		return filteredList;
 	}//end
 	
 	private List<Flavor> getFlavorsByBrand(int id){
 		
 		Brand brand = br.findById(id).orElseThrow(() -> new BrandNotFoundException("No brand found with id: " + id));
+		
+		LOG.info("Looked up " + brand.getName());
 		
 		return fr.findFlavorByBrand(brand);
 		

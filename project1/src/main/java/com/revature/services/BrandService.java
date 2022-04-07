@@ -4,6 +4,8 @@ import java.util.List;
 
 import javax.transaction.Transactional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +20,7 @@ import com.revature.repositories.BrandRepository;
 public class BrandService {
 	
 	private BrandRepository br;
+	private static Logger LOG =LoggerFactory.getLogger(BrandService.class);
 	
 	/*@Autowired annotation indicates that the constructor should be autowired when creating the bean
 	 * It is used for dependency injection - providing the objects that an object needs
@@ -50,8 +53,9 @@ public class BrandService {
 	
 	public Brand getBrandById(int id){
 		
-		
-		return br.findById(id).orElseThrow(() -> new BrandNotFoundException("No brand of id: " + id));
+		Brand brand = br.findById(id).orElseThrow(() -> new BrandNotFoundException("No brand of id: " + id));
+		LOG.info("Looked up " + brand.getName());
+		return brand;
 		
 	}//end
 	
@@ -69,11 +73,10 @@ public class BrandService {
 	@Transactional
 	public boolean deleteBrandById(int id){
 		
-		boolean brandDeleted = true;
-		
 		br.findById(id).orElseThrow(() -> new BrandNotFoundException("No brand of id: " + id));
 		br.deleteById(id);
 		
-		return brandDeleted;
+		return true;
+		
 	}
 }//end 
