@@ -32,10 +32,13 @@ public class JWTUtil {
 	
 	public String generateToken(UserDTO user){
 		Map<String, Object> claims = new HashMap<>();
+		claims.put("id", user.getId());
+		claims.put("role", user.getRole().toString());
+		
 		return createToken(claims, user);
 	}//end
 	
-	private Claims extractAllClaims(String token){
+	public Claims extractAllClaims(String token){
 		return Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token).getBody();
 	}
 	

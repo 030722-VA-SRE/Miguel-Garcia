@@ -52,9 +52,7 @@ public class BrandController {
 	
 	@GetMapping
 	public ResponseEntity<List<Brand>> getAllBrands(){
-		/*
-		 * ResponseEntity represents the whole HTTP response: status code, headers, and body
-		 */
+
 		return new ResponseEntity<>(bs.getAllBrands(), HttpStatus.OK);
 	}//end 
 	

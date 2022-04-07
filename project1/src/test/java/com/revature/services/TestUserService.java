@@ -11,6 +11,7 @@ import static org.mockito.Mockito.verify;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -84,8 +85,12 @@ class TestUserService {
 		userList.add(user2);
 		userList.add(user3);
 		
+		List<UserDTO> usersDto = userList.stream()
+				.map((user) -> new UserDTO(user))
+				.collect(Collectors.toList());
+		
 		Mockito.when(ur.findAll()).thenReturn(userList);
-		assertEquals(us.getAllUsers(), userList);
+		assertEquals(us.getAllUsers(), usersDto);
 		
 	}//end
 	

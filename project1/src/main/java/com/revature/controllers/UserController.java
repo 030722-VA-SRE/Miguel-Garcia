@@ -22,6 +22,8 @@ import com.revature.models.User;
 import com.revature.services.AuthService;
 import com.revature.services.UserService;
 
+import io.jsonwebtoken.Claims;
+
 @RestController
 @RequestMapping("/users")
 public class UserController {
@@ -38,49 +40,91 @@ public class UserController {
 	}//end
 	
 	@GetMapping
-	public ResponseEntity<List<User>> getAllUsers(@RequestHeader(value = "Authorization", required = false) String token){
-		/*
-		 * ResponseEntity represents the whole HTTP response: status code, headers, and body
-		 */
-				
-		as.verify(token, 0);
+	public ResponseEntity<List<UserDTO>> getAllUsers(@RequestHeader(value = "Authorization", required = false) String token){
+
+		/*if(token == null) {
+			LOG.warn("Not authorized");
+			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+		}//end
+		*/
+		Claims claims = as.verify(token);		
+		if(!claims.get("role").equals("ADMIN")){
+			LOG.warn(claims.getSubject() + " is not authorizd for get get:/users");
+			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+		}
 		
 		LOG.info("Users retrieved");
 		return new ResponseEntity<>(us.getAllUsers(), HttpStatus.OK);
 	}//end 
 	
 	@PostMapping
-	public ResponseEntity<String> createUser(@RequestBody User user) {
+	public ResponseEntity<String> createUser(@RequestBody User user, @RequestHeader(value = "Authorization", required = false) String token) {
+		
+		/*if(token == null) {
+			LOG.warn("Not authorized");
+			return new ResponseEntity<>("Needs authorization to create a new user", HttpStatus.FORBIDDEN);
+		}//end
+		*/
+		Claims claims = as.verify(token);
+		if(!claims.get("role").equals("ADMIN")){
+			LOG.warn(claims.getSubject() + " is not authorizd to create a new user");
+			return new ResponseEntity<>(claims.getSubject() + " is not authorizd to create a new user", HttpStatus.FORBIDDEN);
+		}//end
+		
+		
 		User u = us.createUser(user);
+		LOG.info(claims.getSubject() + " create a new user");
 		return new ResponseEntity<>("User " + u.getUsername() + " has been created.", HttpStatus.CREATED);
 	}
 	
 	@GetMapping("/{id}")
-	public ResponseEntity<UserDTO> getUserById(@PathVariable("id") int id, @RequestHeader(value = "Authorization", required = false) String token){
-		/*
-		 * ResponseEntity represents the whole HTTP response: status code, headers, and body
-		 */
+	public ResponseEntity<UserDTO> getUserById(@PathVariable("id") Integer id, @RequestHeader(value = "Authorization", required = false) String token){
+
+		Claims claim = as.verify(token);
+		if(claim.get("id").equals(id) || claim.get("role").equals("ADMIN")) {
+			
+			return new ResponseEntity<>(us.getUserById(id), HttpStatus.OK);
+			
+		}else {
+			LOG.warn(claim.getSubject() + " does not have the authorization to view users/" + id.intValue());
+			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+		}
 		
-		as.verify(token, id);
-		return new ResponseEntity<>(us.getUserById(id), HttpStatus.OK);
 	}//end 
 	
 	@PutMapping("/{id}")
-	public ResponseEntity<User> updateUser(@RequestBody User user, @PathVariable("id") int id, @RequestHeader(value = "Authorization", required = false) String token){
+	public ResponseEntity<User> updateUser(@RequestBody User user, @PathVariable("id") Integer id, @RequestHeader(value = "Authorization", required = false) String token){
 				
-		as.verify(token, id);
-		LOG.info("User was updated: {}", user.getUsername());
-		return new ResponseEntity(us.updateUser(id, user), HttpStatus.OK);
+		
+		Claims claim = as.verify(token);
+		if(claim.get("id").equals(id) || claim.get("role").equals("ADMIN")) {
+			
+			LOG.info("User was updated: {}", user.getUsername());
+			return new ResponseEntity(us.updateUser(id, user), HttpStatus.OK);
+			
+		}else {
+			LOG.warn(claim.getSubject() + " does not have the authorization to update users/" + id.intValue());
+			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+		}
+		
 	}
 	
 	@DeleteMapping("/{id}")
-	public ResponseEntity<String> deleteById(@PathVariable("id") int id, @RequestHeader(value = "Authorization", required = false) String token){
+	public ResponseEntity<String> deleteById(@PathVariable("id") Integer id, @RequestHeader(value = "Authorization", required = false) String token){
 		
-		as.verify(token, id);
-		
-		us.deleteUser(id);
-		LOG.info("Deleted user at id: {}", id);
-		return new ResponseEntity<>("User was deleted", HttpStatus.OK);
+		Claims claim = as.verify(token);
+
+		if(claim.get("id").equals(id) || claim.get("role").equals("ADMIN")) {
+			
+			us.deleteUser(id);
+			LOG.info("Deleted user at id: " + id.intValue());
+			return new ResponseEntity<>("User was deleted", HttpStatus.OK);
+			
+		}else {
+			LOG.warn(claim.getSubject() + " does not have the authorization to delete users/" + id.intValue());
+			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+		}
+
 	}
 	
 }//end

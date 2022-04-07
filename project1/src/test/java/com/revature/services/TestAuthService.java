@@ -67,14 +67,7 @@ class TestAuthService {
 		assertEquals(jwt.extractUsername(token), user.getUsername());
 		
 	}///end
-	
-	@Test
-	void verifyFailNullTokenTest() {
 		
-		assertThrows(AuthorizationException.class, () -> as.verify(null, 0));
-		
-	}//end
-	
 
 	
 }//end

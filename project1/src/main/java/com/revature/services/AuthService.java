@@ -8,8 +8,11 @@ import org.springframework.stereotype.Service;
 import com.revature.dtos.UserDTO;
 import com.revature.exceptions.AuthenticationException;
 import com.revature.exceptions.AuthorizationException;
+import com.revature.models.Role;
 import com.revature.models.User;
 import com.revature.repositories.UserRepository;
+
+import io.jsonwebtoken.Claims;
 
 @Service
 public class AuthService {
@@ -25,7 +28,7 @@ public class AuthService {
 		this.jwt = jwt;
 	}
 	
-	public UserDTO login(String username, String password) {
+	public String login(String username, String password) {
 		// retrieve user from db by username, returns null if does not exist
 		User principal = ur.findUserByUsername(username);
 		
@@ -34,64 +37,49 @@ public class AuthService {
 			throw new AuthenticationException("Attempted to login with username: " + username);
 		}
 		LOG.info("User succesfully logged in: id" + principal.getId()+ " name: "+ principal.getUsername());
-		return new UserDTO(principal);
+		return generateToken(new UserDTO(principal));
 	}//
+	
+	public String register(User user){
+		
+		if(ur.findUserByUsername(user.getUsername()) != null) {
+			throw new AuthenticationException("Username is not available");
+		}
+		else if(user.getUsername() == null) {
+			throw new AuthenticationException("Username cannot be empty");
+		}
+		else if(user.getPassword() == null) {
+			throw new AuthenticationException("Password cannot be empty");
+		}
+		else if(user.getUsername().length() < 6) {
+			throw new AuthenticationException("Password must be at least 6 characters");
+		}//end
+		
+		user.setRole(Role.USER);
+		
+		ur.save(user);
+		LOG.info("New user was registered");
+		
+		return generateToken(new UserDTO(user));
+		
+	}//end
 	
 	public String generateToken(UserDTO principal) {
 		
 		return jwt.generateToken(principal);
 	}
 	
-	public boolean verify(String token, int id){
+	public Claims verify(String token) {
 		
 		if(token == null) {
-			throw new AuthorizationException("null token");
+			LOG.warn("Not authorized");
+			throw new AuthenticationException("Not authorized");
 		}
 		
-		User principal = ur.findUserByUsername(jwt.extractUsername(token));
-		
-		if(principal != null && principal.getId() == id || principal.getRole().toString().equals("ADMIN")) {
-			LOG.info("Token verified successfully");
-			return true;
-		}//
-		else {
-			throw new AuthorizationException(principal.getUsername() + " does not have permission");
-		}//end
+		return jwt.extractAllClaims(token);
 		
 	}//end
 	
-	/*
-	public boolean verifyAdmin(String token) {
 		
-		if(token == null) {
-			//throw new error
-		}//end 
-		
-		User principal = ur.findUserByUsername(jwt.extractUsername(token));
-		
-		if(principal == null || !principal.getRole().toString().equals("ADMIN")) {
-			//Log error
-			return false;
-		}
-		
-		return true;
-		
-	}//end verify
-	
-	public boolean verifyUser(String token, int id){
-		if(token == null) {
-			//throw new error
-		}//end 
-		
-		User principal = ur.findUserByUsername(jwt.extractUsername(token));
-		
-		if(principal == null || principal.getId() != id) {
-			//log
-			return false;
-		}//end
-		
-		return true;
-	}
-	*/
 
 }

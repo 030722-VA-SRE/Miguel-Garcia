@@ -1,6 +1,7 @@
 package com.revature.services;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
@@ -47,8 +48,15 @@ public class UserService{
 		return ur.save(user);
 	}
 	
-	public List<User> getAllUsers(){
-		return ur.findAll();
+	public List<UserDTO> getAllUsers(){
+		
+		List<User> users = ur.findAll();
+		
+		List<UserDTO> usersDTO = users.stream()
+								.map((user) -> new UserDTO(user))
+								.collect(Collectors.toList());
+		
+		return usersDTO;
 	}//end getAll
 	
 	
