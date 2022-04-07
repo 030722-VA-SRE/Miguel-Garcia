@@ -67,11 +67,13 @@ public class BrandService {
 	
 	
 	@Transactional
-	public void deleteBrandById(int id){
+	public boolean deleteBrandById(int id){
 		
-		//searches if brand is is database
+		boolean brandDeleted = true;
+		
 		br.findById(id).orElseThrow(() -> new BrandNotFoundException("No brand of id: " + id));
-		
 		br.deleteById(id);
+		
+		return brandDeleted;
 	}
 }//end 

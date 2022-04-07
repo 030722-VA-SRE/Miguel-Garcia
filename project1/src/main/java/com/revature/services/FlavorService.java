@@ -204,11 +204,12 @@ public class FlavorService {
 	}//end
 	
 	@Transactional
-	public void deleteFlavor(int id){
+	public boolean deleteFlavor(int id){
 		
-		//fr.findById(id).orElseThrow(FlavorNotFoundException::new);
+		fr.findById(id).orElseThrow(FlavorNotFoundException::new);
 		fr.deleteById(id);
 		
+		return true;
 	}//end
 	
 }//end

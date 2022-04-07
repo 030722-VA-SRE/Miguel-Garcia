@@ -42,7 +42,7 @@ public class AuthService {
 		return jwt.generateToken(principal);
 	}
 	
-	public void verify(String token, int id){
+	public boolean verify(String token, int id){
 		
 		if(token == null) {
 			throw new AuthorizationException("null token");
@@ -52,6 +52,7 @@ public class AuthService {
 		
 		if(principal != null && principal.getId() == id || principal.getRole().toString().equals("ADMIN")) {
 			LOG.info("Token verified successfully");
+			return true;
 		}//
 		else {
 			throw new AuthorizationException(principal.getUsername() + " does not have permission");
@@ -59,6 +60,7 @@ public class AuthService {
 		
 	}//end
 	
+	/*
 	public boolean verifyAdmin(String token) {
 		
 		if(token == null) {
@@ -90,6 +92,6 @@ public class AuthService {
 		
 		return true;
 	}
-	
+	*/
 
 }

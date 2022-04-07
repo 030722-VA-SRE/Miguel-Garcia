@@ -1,7 +1,9 @@
 package com.revature.services;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -106,8 +108,17 @@ class TestUserService {
 	@Test
 	void deleteUserFailTest() {
 		
-		assertThrows(UserNotFoundException.class, () -> us.deleteUser(1));
+		assertFalse(us.deleteUser(1));
+		//assertThrows(UserNotFoundException.class, () -> us.deleteUser(1));
 		
+	}//end
+	
+	@Test
+	void deleteUserTest() {
+		
+		User user = new User(1, "Miguel", "Strong", Role.ADMIN);
+		Mockito.when(ur.findById(1)).thenReturn(Optional.of(user));
+		assertTrue(us.deleteUser(1));
 	}
 	
 }//end

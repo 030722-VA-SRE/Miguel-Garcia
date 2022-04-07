@@ -1,6 +1,7 @@
 package com.revature.services;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.times;
@@ -117,6 +118,17 @@ class TestBrandService {
 		
 		Assertions.assertThrows(BrandNotFoundException.class, () -> bs.updateBrand(1, b));
 	}//end
-		
 	
+	@Test
+	void deleteBrandTest() {
+		
+		Brand b = new Brand(1, "Test");
+		Mockito.when(br.findById(1)).thenReturn(Optional.of(b));
+		assertTrue(bs.deleteBrandById(1));
+	}//end
+	
+	@Test
+	void deleteBrandFailTest() {
+		assertThrows(BrandNotFoundException.class, () -> bs.deleteBrandById(1));
+	}
 }//end

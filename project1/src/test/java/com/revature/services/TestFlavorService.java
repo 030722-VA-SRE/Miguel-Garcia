@@ -1,6 +1,7 @@
 package com.revature.services;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
@@ -170,19 +171,34 @@ class TestFlavorService {
 		List<Flavor> fList = new ArrayList<>();
 		fList.add(b);
 		
-		Mockito.when(br.save(a)).thenReturn(a);
 		Mockito.when(br.findById(1)).thenReturn(Optional.of(a));
-		Mockito.when(fr.findAll()).thenReturn(fList);
+		Mockito.when(fr.findFlavorByBrand(a)).thenReturn(fList);
 		
 		assertEquals(fs.getFlavorsWithQueryParams(null, null, null, 1), fList);		
 		
 	}//end
+	
 	
 	@Test
 	void queryParamFailTest() {
 		Assertions.assertThrows(FlavorNotFoundException.class, () -> fs.getFlavorsWithQueryParams("Red", null, null, null));
 	}
 	
+	@Test
+	void deleteFlavorTest() {
+		Brand a = new Brand(1, "Cheetos");
+		
+		Flavor b = new Flavor(1,"Red", 10, 10, a);
+		
+		Mockito.when(fr.findById(1)).thenReturn(Optional.of(b));
+		assertTrue(fs.deleteFlavor(1));
+	}//end
 	
+	@Test
+	void deleteFlavorFailTest() {
+		
+		assertThrows(FlavorNotFoundException.class, () -> fs.deleteFlavor(1));
+		
+	}//end
 	
 }//end

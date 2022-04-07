@@ -60,10 +60,17 @@ public class UserService{
 	}//end
 	
 	@Transactional
-	public void deleteUser(int id){
+	public boolean deleteUser(int id){
+		boolean userDeleted = true;
 		
-		ur.findById(id).orElseThrow(UserNotFoundException:: new);
-		ur.deleteById(id);
+		try {
+			ur.findById(id).orElseThrow(UserNotFoundException:: new);
+			ur.deleteById(id);
+		}catch(UserNotFoundException e) {
+			userDeleted = false;
+		}//end
+		
+		return userDeleted;
 		
 	}
 

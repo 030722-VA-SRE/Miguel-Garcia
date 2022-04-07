@@ -2,7 +2,9 @@ package com.revature.services;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import org.apache.tomcat.util.http.parser.Authorization;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -13,14 +15,18 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.revature.dtos.UserDTO;
 import com.revature.exceptions.AuthenticationException;
+import com.revature.exceptions.AuthorizationException;
 import com.revature.models.Role;
 import com.revature.models.User;
 import com.revature.repositories.UserRepository;
 
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 @ExtendWith(MockitoExtension.class)
 class TestAuthService {
 	
+	private static Logger LOG = LoggerFactory.getLogger(TestAuthService.class);
+			
 	@Mock
 	private UserRepository ur;
 	
@@ -61,5 +67,14 @@ class TestAuthService {
 		assertEquals(jwt.extractUsername(token), user.getUsername());
 		
 	}///end
+	
+	@Test
+	void verifyFailNullTokenTest() {
+		
+		assertThrows(AuthorizationException.class, () -> as.verify(null, 0));
+		
+	}//end
+	
+
 	
 }//end
