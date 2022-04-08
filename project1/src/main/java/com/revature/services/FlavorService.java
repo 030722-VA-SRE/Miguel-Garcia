@@ -38,6 +38,8 @@ public class FlavorService {
 	@Transactional
 	public Flavor createFlavor(Flavor newflavor) {
 		
+		LOG.debug("Attempting to create flavor");
+		
 		List<Flavor> fL = getAllFlavors();
 		
 		for(Flavor f: fL) {
@@ -49,11 +51,17 @@ public class FlavorService {
 			
 		}//end for
 		
-		return fr.save(newflavor);
+		Flavor nF = fr.save(newflavor);
+		
+		LOG.debug("Done creating new flavor");
+		
+		return nF;
 	}//end 
 	
 	@Transactional
 	public Flavor createFlavorWithBrandId(Flavor newFlavor, int brandId) {
+		
+		LOG.debug("Attempting to create flavor with brand Id");
 		
 		Brand b = br.findById(brandId).orElseThrow(BrandNotFoundException::new);
 		newFlavor.setBrandId(b);
@@ -65,35 +73,56 @@ public class FlavorService {
 			}
 		}//end for
 		
-		return fr.save(newFlavor);
+		Flavor nF = fr.save(newFlavor);
+		
+		LOG.debug("Done creating new flavor with brand id");
+		
+		return nF;
 		
 	}//end
 	
 	@Transactional
 	public Flavor flavorUpdate(int id, Flavor flavor){
 		
+		LOG.debug("Attempting to update flavor");
+		
 		Flavor f = fr.findById(id).orElseThrow(() -> new FlavorNotFoundException("Flavor id not found: " + id));
 		
-		flavor.setId(f.getId());
+		f.setPrice(flavor.getPrice());
 		
-		return fr.save(flavor);
+		Flavor sF = fr.save(f);
+		
+		LOG.debug("Done updating flavor");
+		
+		return sF;
 		
 	}//end
 
 	public Flavor getFlavorById(int id){
 		
+		LOG.debug("Attempting to retrieve flavor by Id");
+		
 		Flavor f = fr.findById(id).orElseThrow(() -> new FlavorNotFoundException("Flavor id not found: " + id));
 		
 		LOG.info("Flavor id: " + id + " Chip: " + f.getBrand().getName() + " " + f.getName());
+		LOG.debug("Done retrieving flavor by Id");
 		
 		return f;
 	}//end
 	
 	public List<Flavor> getAllFlavors(){
-		return fr.findAll();
+		
+		LOG.debug("Attempting to retrieve all flavors");
+		
+		List<Flavor> flavorList = fr.findAll();
+		LOG.debug("Done retrieving all flavors");
+		
+		return flavorList;
 	}//end
 	
 	private List<Flavor> getFlavorsByName(String name){
+		
+		LOG.debug("Retieving flavors by name");
 		
 		List<Flavor> flavors = getAllFlavors();
 		
@@ -111,12 +140,13 @@ public class FlavorService {
 		}//end
 		
 		LOG.info("Looked up " + name + " flavored chips");
-		
+		LOG.debug("Done retrieving flavors by name");
 		return filteredList;
 		
 	}//end getFlavorsByName
 	
 	private List<Flavor> getFlavorsByOunces(int ounces){
+		LOG.debug("Retrieving flavors by ounces");
 		List<Flavor> flavors = getAllFlavors();
 		
 		List<Flavor> filteredList = new ArrayList<>();
@@ -133,11 +163,12 @@ public class FlavorService {
 		}//end
 		
 		LOG.info("Looked up " + ounces + " oz chips");
-		
+		LOG.debug("Done retrieving flavors by ounces");
 		return filteredList;
 	}//end 
 	
 	private List<Flavor> getFlavorsByPrice(float price){
+		LOG.debug("Retrieving flavors by price");
 		List<Flavor> flavors = getAllFlavors();
 		
 		List<Flavor> filteredList = new ArrayList<>();
@@ -154,22 +185,27 @@ public class FlavorService {
 		}//end
 		
 		LOG.info("Looked up $" + price + " bag of chips");
-		
+		LOG.debug("Done retrieving flavors by price");
 		return filteredList;
 	}//end
 	
 	private List<Flavor> getFlavorsByBrand(int id){
 		
+		LOG.debug("Retrieving flavors by brand");
 		Brand brand = br.findById(id).orElseThrow(() -> new BrandNotFoundException("No brand found with id: " + id));
 		
 		LOG.info("Looked up " + brand.getName());
 		
-		return fr.findFlavorByBrand(brand);
+		List<Flavor> fl = fr.findFlavorByBrand(brand);
+		LOG.debug("Done retrieving flavors by brand");
+		
+		return fl;
 		
 	}//end
 	
 
 	public List<Flavor> getFlavorsWithQueryParams(String name, Integer ounces, Float price, Integer brandId){
+		LOG.debug("Retrieving flavors by with query params");
 		
 		List<List<Flavor>> listOfResults = new ArrayList<>();
 		List<Flavor> result;
@@ -214,7 +250,7 @@ public class FlavorService {
 		if(result.isEmpty()){
 			throw new FlavorNotFoundException("No flavors found with the queryParams");
 		}
-		
+		LOG.debug("Done retrieving flavors by with query params");
 		return result;
 		
 	}//end
@@ -222,9 +258,12 @@ public class FlavorService {
 	@Transactional
 	public boolean deleteFlavor(int id){
 		
+		LOG.debug("Attempting to delete flavor");
+		
 		fr.findById(id).orElseThrow(FlavorNotFoundException::new);
 		fr.deleteById(id);
 		
+		LOG.debug("Done deleting flavor");
 		return true;
 	}//end
 	

@@ -55,58 +55,44 @@ public class BrandController {
 	@GetMapping
 	public ResponseEntity<List<Brand>> getAllBrands(@RequestHeader(value = "Authorization", required = false) String token){
 		
-		as.verify(token);
+		as.verify(token, 0);
 		return new ResponseEntity<>(bs.getAllBrands(), HttpStatus.OK);
 	}//end 
 	
 	@PostMapping
 	public ResponseEntity<String> createBrand(@RequestBody Brand brand, @RequestHeader(value = "Authorization", required = false) String token) {
 		
-		Claims claim = as.verify(token);
-		
-		if(!claim.get("role").equals("ADMIN")) {
-			LOG.warn(claim.getSubject() + "is not authorized to add a brand to the shop");
-			return new ResponseEntity<>(claim.getSubject() + "is not authorized to add a brand to the shop", HttpStatus.FORBIDDEN);
-		}//end
+		as.verify(token, -1);
 		
 		Brand b = bs.createBrand(brand);
-		LOG.info(claim.getSubject() + " added brand" + b.getName() + " to the shop");
+		LOG.info(b.getName() + " was added to the shop");
 		return new ResponseEntity<>("Brand " + b.getName() + " has been created.", HttpStatus.CREATED);
 	}
 	
 	@GetMapping("/{id}")
 	public ResponseEntity<Brand> getBrandById (@PathVariable("id") int id, @RequestHeader(value = "Authorization", required = false) String token){
 		
-		as.verify(token);
+		as.verify(token, 0);
 		return new ResponseEntity<>(bs.getBrandById(id), HttpStatus.OK);
 	}
 	
 	@PutMapping("/{id}")
 	public ResponseEntity<Brand> updateBrand(@RequestBody Brand brand, @PathVariable("id") int id, @RequestHeader(value = "Authorization", required = false) String token) {
 		
-		Claims claim = as.verify(token);
+		as.verify(token, -1);
 		
-		if(!claim.get("role").equals("ADMIN")) {
-			LOG.warn(claim.getSubject() + "is not authorized to update brands in shop");
-			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
-		}//end
-		
-		LOG.info(claim.getSubject() + " updated brand at id: " + id);
-		return new ResponseEntity<>(bs.updateBrand(id, brand), HttpStatus.ACCEPTED);
+		Brand b = bs.updateBrand(id, brand);
+		LOG.info("updated brand at id: " + id);
+		return new ResponseEntity<>(b, HttpStatus.ACCEPTED);
 	}
 	
 	@DeleteMapping("/{id}")
 	public ResponseEntity<String> deleteById(@PathVariable("id") int id, @RequestHeader(value = "Authorization", required = false) String token) {
 		
-		Claims claim = as.verify(token);
-		
-		if(!claim.get("role").equals("ADMIN")) {
-			LOG.warn(claim.getSubject() + " is not authorized to delete brand of id: " + id);
-			return new ResponseEntity<>(claim.getSubject() + " is not authorized to delete brand of id: " + id, HttpStatus.FORBIDDEN);
-		}
+		as.verify(token, -1);
 		
 		bs.deleteBrandById(id);
-		LOG.info(claim.getSubject() + " deleted brand at id: " + id);
+		LOG.info("Deleted brand at id: " + id);
 		return new ResponseEntity<>("Brand was deleted", HttpStatus.OK);
 	}
 	
@@ -114,7 +100,7 @@ public class BrandController {
 	public ResponseEntity<List<Flavor>> findFlavorsByBrand(@PathVariable("id") Integer id, @RequestParam(required = false) String flavor, @RequestParam(required = false) Integer ounces, 
 			@RequestParam(required = false) Float price, @RequestHeader(value = "Authorization", required = false) String token){
 		
-		as.verify(token);
+		as.verify(token, 0);
 		return new ResponseEntity<>(fs.getFlavorsWithQueryParams(flavor, ounces, price, id), HttpStatus.OK);
 	}//end
 	
@@ -122,53 +108,39 @@ public class BrandController {
 	@PostMapping("/{id}/flavors")
 	public ResponseEntity<String> createFlavorWithBrandId(@RequestBody Flavor flavor, @PathVariable("id") int id, @RequestHeader(value = "Authorization", required = false) String token) {
 		
-		Claims claim = as.verify(token);
-		
-		if(!claim.get("role").equals("ADMIN")) {
-			LOG.warn(claim.getSubject() + " is not authorized to add flavor to shop");
-			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
-		}//end
+		as.verify(token, -1);
 		
 		Flavor f = fs.createFlavorWithBrandId(flavor, id);
-		LOG.info(claim.getSubject() + " added flavor to the shop");
+		LOG.info("Added flavor to the shop: " + f.toString());
 		return new ResponseEntity<>("Flavor " + f.getName() + " has been created.", HttpStatus.CREATED);
 		
 	}//end
 	
 	@GetMapping("/{brand}/flavors/{id}")
 	public ResponseEntity<Flavor> getFlavorById(@PathVariable("id") int id, @RequestHeader(value = "Authorization", required = false) String token){
-		as.verify(token);
+		
+		as.verify(token, 0);
 		return new ResponseEntity<>(fs.getFlavorById(id), HttpStatus.OK);
 	}//end
 	
 	@PutMapping("/{brand}/flavors/{id}")
 	public ResponseEntity<Flavor> updateFlavor(@RequestBody Flavor flavor, @PathVariable("id") int id, @RequestHeader(value = "Authorization", required = false) String token){
 		
-		Claims claim = as.verify(token);
-		
-		if(!claim.get("role").equals("ADMIN")) {
-			LOG.warn(claim.getSubject() + " is not authorized to update flavors in the shop");
-			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
-		}//end
+		as.verify(token, -1);
 		
 		Flavor f = fs.flavorUpdate(id, flavor);
-		LOG.info(claim.getSubject() + " updated flavor in the shop");
+		LOG.info("Updated flavor in the shop: " + f.toString());
 		return new ResponseEntity<>(f, HttpStatus.ACCEPTED);
 	}//end
 	
 	@DeleteMapping("/{brand}/flavors/{id}")
 	public ResponseEntity<String> deleteFlavor(@PathVariable("id") int id, @RequestHeader(value = "Authorization", required = false) String token){
 		
-		Claims claim = as.verify(token);
-		
-		if(!claim.get("role").equals("ADMIN")) {
-			LOG.warn(claim.getSubject() + " is not authorized to get rid of flavors in the shop");
-			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
-		}//end
+		as.verify(token, -1);
 		
 		fs.deleteFlavor(id);
 		
-		LOG.info(claim.getSubject()+ " deleted flavor from the shop");
+		LOG.info("Deleted flavor from the shop at id: " + id);
 		return new ResponseEntity<>("Flavor was deleted", HttpStatus.OK);
 	}//end
 	

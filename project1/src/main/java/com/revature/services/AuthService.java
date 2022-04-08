@@ -30,6 +30,8 @@ public class AuthService {
 	}
 	
 	public UserDTO login(String username, String password) {
+		
+		LOG.debug("Attempting to log user in");
 		// retrieve user from db by username, returns null if does not exist
 		User principal = ur.findUserByUsername(username);
 		
@@ -38,10 +40,13 @@ public class AuthService {
 			throw new AuthenticationException("Attempted to login with username: " + username);
 		}
 		LOG.info("User succesfully logged in: id" + principal.getId()+ " name: "+ principal.getUsername());
+		LOG.debug("User successfully logged in");
 		return new UserDTO(principal);
 	}//
 	
-	public String register(User user){
+	public UserDTO register(User user){
+		
+		LOG.debug("Attempting to register user");
 		
 		if(ur.findUserByUsername(user.getUsername()) != null) {
 			throw new AuthenticationException("Username is not available");
@@ -58,18 +63,24 @@ public class AuthService {
 		
 		user.setRole(Role.USER);
 		
-		ur.save(user);
+		User u = ur.save(user);
 		LOG.info("New user was registered");
-		
-		return generateToken(new UserDTO(user));
+		LOG.debug("Done registering user");
+		return new UserDTO(u);
 		
 	}//end
 	
 	public String generateToken(UserDTO principal) {
 		
-		return jwt.generateToken(principal);
+		LOG.debug("Generating token");
+		
+		String token = jwt.generateToken(principal);
+		
+		LOG.debug("Done generating token");
+		
+		return token;
 	}
-	
+	/*
 	public Claims verify(String token) {
 		
 		if(token == null) {
@@ -80,8 +91,10 @@ public class AuthService {
 		return jwt.extractAllClaims(token);
 		
 	}//end
-	
+	*/
 	public boolean verify(String token, Integer id) {
+		
+		LOG.debug("Verifying token");
 		
 		if(token == null) {
 			LOG.warn("Not authorized");
@@ -91,22 +104,26 @@ public class AuthService {
 		Claims claim = jwt.extractAllClaims(token);
 		/*
 		 * id = -1 only admins have authorization
-		 * id 
+		 * id = 0 valid users have access
+		 * id = some value only that userId and admin
 		 */
 		if(id.equals(-1) && claim.get("role").equals("ADMIN")){
 			LOG.info("token verified successfully");
+			LOG.debug("Done verifying token");
 			MDC.put("userId", claim.get("id"));
 			return true;
 		}//end
 		
 		if(id.equals(0) && claim.get("role").equals("USER") || claim.get("role").equals("ADMIN")) {
 			LOG.info("token verified successfully");
+			LOG.debug("Done verifying token");
 			MDC.put("userId", claim.get("id"));
 			return true;
 		}
 		
 		if(claim.get("id").equals(id) || claim.get("role").equals("ADMIN")){
 			LOG.info("token verified successfully");
+			LOG.debug("Done verifying token");
 			MDC.put("userId", claim.get("id"));
 			return true;
 		}

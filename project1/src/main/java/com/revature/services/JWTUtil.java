@@ -25,7 +25,7 @@ public class JWTUtil {
 		
 		//Sets the JWT payload to be a JSON Claims instance
 		return Jwts.builder().setClaims(claims).setSubject(user.getUsername()).setIssuedAt(Date.from(Instant.now()))
-				.setExpiration(Date.from(Instant.now().plus(5, ChronoUnit.MINUTES)))
+				.setExpiration(Date.from(Instant.now().plus(20, ChronoUnit.MINUTES)))
 				.signWith(SignatureAlgorithm.HS256, SECRET_KEY).compact();
 				
 	}//end
@@ -51,6 +51,7 @@ public class JWTUtil {
 		return extractClaim(token, Claims::getSubject);
 	}
 	
+	/*
 	public Date extractExpiration(String token){
 		return extractClaim(token, Claims::getExpiration);
 	}
@@ -63,7 +64,7 @@ public class JWTUtil {
 		String username = extractUsername(token);
 		return(username.equals(user.getUsername()) && !isTokenExpired(token));
 	}
-	
+	*/
 	
 	
 }//end

@@ -57,7 +57,7 @@ public class CustomizedExceptionHandling{
 	
 	@ExceptionHandler(DataIntegrityViolationException.class)
 	public ResponseEntity<Object> handleDataIntegrityViolationException(DataIntegrityViolationException exception) {
-		LOG.warn("Data integrity violation exception was handled.", exception);
+		LOG.error("Data integrity violation exception.", exception);
 		return new ResponseEntity<>(new ExceptionResponse("Data Integrity Violation", LocalDateTime.now()), HttpStatus.CONFLICT);
 	}//end
 	

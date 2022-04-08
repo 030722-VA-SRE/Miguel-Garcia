@@ -31,7 +31,7 @@ services:
     container_name: promtail-container
     volumes:
       - ./promtail/promtail-docker-config.yml:/etc/promtail/docker-config.yaml
-      - ./logs/application.log:/var/log/application.log
+      - ./logs/application.log:/var/logs/application.log
     command: "--config.file=/etc/promtail/docker-config.yaml"
   
   loki:

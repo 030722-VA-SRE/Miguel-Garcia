@@ -34,12 +34,21 @@ public class BrandService {
 	
 	//return all of the brands
 	public List<Brand> getAllBrands(){
-		return br.findAll();
+		
+		LOG.debug("Retrieving all brands");
+		
+		List<Brand> list = br.findAll();
+		
+		LOG.debug("Done retrieving all brands");
+		
+		return list;
 	}//end
 	
 	//create and adds brand to db
 	@Transactional
 	public Brand createBrand(Brand newBrand){
+		
+		LOG.debug("Attempting to create new brand");
 		
 		Brand b = br.findBrandByName(newBrand.getName());
 		
@@ -48,12 +57,21 @@ public class BrandService {
 		}//end if
 		
 		//save returns the saved entity
-		return br.save(newBrand);
+		
+		Brand nB = br.save(newBrand);
+		
+		LOG.debug("Done creating new brand");
+		
+		return nB;
 	}//end
 	
 	public Brand getBrandById(int id){
 		
+		LOG.debug("Attempting to retreive brand by id");
+		
 		Brand brand = br.findById(id).orElseThrow(() -> new BrandNotFoundException("No brand of id: " + id));
+		
+		LOG.debug("Done retrieving brand by id");
 		LOG.info("Looked up " + brand.getName());
 		return brand;
 		
@@ -62,20 +80,28 @@ public class BrandService {
 	@Transactional
 	public Brand updateBrand(int id, Brand brand) {
 		//Can use the save method to update brand
+		LOG.debug("Attempting to update brand");
 		
 		Brand b = br.findById(id).orElseThrow(() -> new BrandNotFoundException("No brand of id: " + id));
 		brand.setId(b.getId());
 		
-		return br.save(brand); 
+		Brand uB = br.save(brand);
+		
+		LOG.debug("Done updating brand");
+		
+		return uB; 
 	}//end
 	
 	
 	@Transactional
 	public boolean deleteBrandById(int id){
 		
+		LOG.debug("Attempting to delete brand by id");
+		
 		br.findById(id).orElseThrow(() -> new BrandNotFoundException("No brand of id: " + id));
 		br.deleteById(id);
 		
+		LOG.debug("Done deleting brandby id");
 		return true;
 		
 	}

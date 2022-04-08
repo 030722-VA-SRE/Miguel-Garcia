@@ -45,7 +45,7 @@ public class FlavorController {
 			@RequestParam(required = false) Float price, @RequestParam(required = false) Integer brandId,
 			@RequestHeader(value = "Authorization", required = false) String token){
 		
-		as.verify(token);
+		as.verify(token, 0);
 		
 		if(flavor != null || ounces != null || price !=null || brandId != null) {
 			
@@ -62,50 +62,38 @@ public class FlavorController {
 	@PostMapping
 	public ResponseEntity<String> createFlavor(@RequestBody Flavor flavor, @RequestHeader(value = "Authorization", required = false) String token) {
 		
-		Claims claim = as.verify(token);
-		
-		if(!claim.get("role").equals("ADMIN")) {
-			LOG.warn(claim.getSubject() + " is not authorized to add flavors to the shop");
-			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
-		}//end
+		as.verify(token, -1);
 		
 		Flavor f = fs.createFlavor(flavor);
-		LOG.info(claim.getSubject() + " added flavor to the shop");
+		LOG.info("Added flavor to the shop: " + f.toString());
 		return new ResponseEntity<>("Brand " + f.getName() + " has been created.", HttpStatus.CREATED);
 		
 	}//end
 	
 	@GetMapping("/{id}")
 	public ResponseEntity<Flavor> getFlavorById(@PathVariable("id") int id, @RequestHeader(value = "Authorization", required = false) String token){
-		as.verify(token);
+		
+		as.verify(token, 0);
 		return new ResponseEntity<>(fs.getFlavorById(id), HttpStatus.OK);
 	}//end
 	
 	@PutMapping("/{id}")
 	public ResponseEntity<Flavor> updateFlavor(@RequestBody Flavor flavor, @PathVariable("id") int id, @RequestHeader(value = "Authorization", required = false) String token){
 		
-		Claims claim = as.verify(token);
-		if(!claim.get("role").equals("ADMIN")) {
-			LOG.warn(claim.getSubject() + " is not authorized to update flavors in the shop");
-			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
-		}//end
+		as.verify(token, -1);
 		
 		Flavor f = fs.flavorUpdate(id, flavor);
-		LOG.info(claim.getSubject() + " updated flavor to the shop");
+		LOG.info("updated flavor to the shop to: " + f.getName());
 		return new ResponseEntity<>(f, HttpStatus.ACCEPTED);
 	}//end
 	
 	@DeleteMapping("/{id}")
 	public ResponseEntity<String> deleteFlavor(@PathVariable("id") int id, @RequestHeader(value = "Authorization", required = false) String token){
 		
-		Claims claim = as.verify(token);
-		if(!claim.get("role").equals("ADMIN")) {
-			LOG.warn(claim.getSubject() + " is not authorized to delete flavors in the shop");
-			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
-		}//end
+		as.verify(token, -1);
 				
 		fs.deleteFlavor(id);
-		LOG.info(claim.getSubject() + " deleted flavor from the shop");
+		LOG.info("Deleted flavor from the shop ");
 		return new ResponseEntity<>("Flavor was deleted", HttpStatus.OK);
 	}//end
 	
