@@ -57,9 +57,6 @@ public class AuthService {
 		else if(user.getPassword() == null) {
 			throw new AuthenticationException("Password cannot be empty");
 		}
-		else if(user.getUsername().length() < 6) {
-			throw new AuthenticationException("Password must be at least 6 characters");
-		}//end
 		
 		user.setRole(Role.USER);
 		
