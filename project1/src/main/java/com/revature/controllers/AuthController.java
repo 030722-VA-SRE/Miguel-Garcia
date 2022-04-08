@@ -57,7 +57,7 @@ public class AuthController {
 		
 		UserDTO principle = as.register(user);
 		
-		return new ResponseEntity<>(principle.getUsername() + " was registered", HttpStatus.ACCEPTED);
+		return new ResponseEntity<>("id: " + principle.getId() +" " +principle.getUsername() + " was registered", HttpStatus.ACCEPTED);
 		
 	}//end
 	
